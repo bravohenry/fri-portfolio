@@ -102,8 +102,24 @@
         }
 
         #session-panel.expanded {
-            height: 85% !important;
-            flex: 1 1 85%;
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            margin-top: 0;
+            animation: panel-expand 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes panel-expand {
+            0% {
+                opacity: 0;
+                transform: scale(0.97) translateY(8px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
 
         #session-panel .session-chevron {
@@ -484,7 +500,7 @@
         </div>
 
         
-        <div class="col-span-6 flex flex-col min-h-0 relative" vid="106">
+        <div id="session-column" class="col-span-6 flex flex-col min-h-0 relative" vid="106">
             
             
             <div class="flex-1 relative flex items-center justify-center" vid="107">
@@ -545,8 +561,8 @@
                 
                 <div class="relative group" vid="150">
                     <div class="absolute -top-3 left-2 text-[10px] text-pink-500 bg-[#0a1525] px-1 font-tech" vid="151">COMMAND INPUT</div>
-                    <input type="text" class="w-full bg-[#0a1525]/50 border border-pink-500/30 text-pink-100 font-tech p-3 pl-4 rounded focus:outline-none focus:border-pink-400 transition-all placeholder-pink-900/60" placeholder="Enter command or query..." autofocus="" vid="152">
-                    <button class="absolute right-2 top-[10px] p-1 text-pink-500 hover:text-white transition-colors" vid="153">
+                    <input type="text" id="session-input" class="w-full bg-[#0a1525]/50 border border-pink-500/30 text-pink-100 font-tech p-3 pl-4 pr-10 rounded focus:outline-none focus:border-pink-400 transition-all placeholder-pink-900/60" placeholder="Enter command or query... (try /help)" autofocus="" vid="152">
+                    <button type="button" id="session-send" class="absolute right-2 top-[10px] p-1 text-pink-500 hover:text-white transition-colors" vid="153" title="Send">
                         <img src="https://unpkg.com/pixelarticons@1.8.1/svg/arrow-right.svg" class="pa-icon w-5 h-5 inline-block" alt="" aria-hidden="true">
                     </button>
                 </div>
@@ -803,6 +819,86 @@
         function toggleSession() { sessionPanel.classList.toggle('expanded'); }
         if (sessionToggle) sessionToggle.addEventListener('click', toggleSession);
         if (sessionHeader) sessionHeader.addEventListener('click', toggleSession);
+
+        (function() {
+            const terminal = document.getElementById('session-terminal');
+            const input = document.getElementById('session-input');
+            const sendBtn = document.getElementById('session-send');
+            if (!terminal || !input) return;
+
+            const slashReplies = {
+                help: 'Available commands: /help, /status, /hello, /ping, /about, /modules. Or type anything for a chat reply.',
+                status: 'Systems nominal. CPU 18%, Memory 1.2GB, Latency 47ms. FRI Interface v2.4.0 — ready for commands.',
+                hello: 'Hey. Friday here. What do you need?',
+                ping: 'pong. Latency 47ms.',
+                about: 'FRI Interface — portfolio shell for Friday. Designation: fri. Brain: MiniMax-M2.1. Voice: Bella.',
+                modules: 'Active: Natural Language, Code Execution, File Ops, Web Search, Memory, Voice, WhatsApp Bridge. All green.'
+            };
+            const genericReplies = [
+                'Roger that. Noted and queued.',
+                'Affirmative. I\'ll take that under consideration.',
+                'Got it. Anything else?',
+                'Understood. System updated.',
+                'Copy that. Ready for next command.',
+                'Noted. Let me know if you need more.'
+            ];
+
+            function getReply(text) {
+                const t = text.trim();
+                let body;
+                if (t.startsWith('/')) {
+                    const cmd = t.slice(1).split(/\s/)[0].toLowerCase();
+                    body = slashReplies[cmd] || 'Unknown command. Type /help for options.';
+                } else {
+                    body = genericReplies[Math.floor(Math.random() * genericReplies.length)];
+                }
+                return 'Friday: ' + body;
+            }
+
+            function appendExchange(userText, friText) {
+                const cursorLine = terminal.querySelector('.term-prompt-fri')?.parentElement;
+                const userDiv = document.createElement('div');
+                userDiv.className = 'mt-1';
+                userDiv.innerHTML = '<span class="term-prompt-user">zihan@portfolio:~$</span> ' + escapeHtml(userText);
+                const outDiv = document.createElement('div');
+                outDiv.className = 'term-output typewriter';
+                if (cursorLine) {
+                    terminal.insertBefore(outDiv, cursorLine);
+                    terminal.insertBefore(userDiv, outDiv);
+                } else {
+                    terminal.appendChild(userDiv);
+                    terminal.appendChild(outDiv);
+                }
+                var pos = 0;
+                var typeMs = 45;
+                function typeTick() {
+                    pos++;
+                    outDiv.textContent = friText.slice(0, pos);
+                    terminal.parentElement.scrollTop = terminal.parentElement.scrollHeight;
+                    if (pos < friText.length) setTimeout(typeTick, typeMs);
+                    else outDiv.classList.remove('typewriter');
+                }
+                setTimeout(typeTick, typeMs);
+            }
+
+            function escapeHtml(s) {
+                const div = document.createElement('div');
+                div.textContent = s;
+                return div.innerHTML;
+            }
+
+            function submit() {
+                const text = input.value.trim();
+                if (!text) return;
+                appendExchange(text, getReply(text));
+                input.value = '';
+            }
+
+            if (sendBtn) sendBtn.addEventListener('click', submit);
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') { e.preventDefault(); submit(); }
+            });
+        })();
     </script>
 
 </body></html>
