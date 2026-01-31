@@ -1,0 +1,570 @@
+<html lang="en" vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">FRI Interface v2.4.0</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17" vid="5"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&amp;family=Share+Tech+Mono&amp;display=swap" rel="stylesheet" vid="6">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js" vid="7"></script>
+    <style vid="8">
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-dim: #004d4f;
+            --bg-dark: #050510;
+            --glass-border: rgba(0, 243, 255, 0.3);
+            --glass-bg: rgba(5, 12, 25, 0.7);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: #e0f7fa;
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .font-tech {
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.15);
+            border-color: rgba(0, 243, 255, 0.5);
+        }
+
+        
+        .tech-border::before, .tech-border::after, 
+        .tech-border > .corner-bl, .tech-border > .corner-br {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tech-border::before { top: -1px; left: -1px; border-top-color: var(--neon-blue); border-left-color: var(--neon-blue); }
+        .tech-border::after { top: -1px; right: -1px; border-top-color: var(--neon-blue); border-right-color: var(--neon-blue); }
+        .tech-border > .corner-bl { bottom: -1px; left: -1px; border-bottom-color: var(--neon-blue); border-left-color: var(--neon-blue); }
+        .tech-border > .corner-br { bottom: -1px; right: -1px; border-bottom-color: var(--neon-blue); border-right-color: var(--neon-blue); }
+
+        
+        @keyframes scanline {
+            0% { top: -100%; opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { top: 200%; opacity: 0; }
+        }
+
+        .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 243, 255, 0.02) 51%);
+            background-size: 100% 4px;
+            z-index: 50;
+        }
+
+        .scanner-bar {
+            position: absolute;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to bottom, transparent, rgba(0, 243, 255, 0.1), transparent);
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
+            z-index: 40;
+        }
+
+        @keyframes rotate-slow { 100% { transform: rotate(360deg); } }
+        @keyframes rotate-rev { 100% { transform: rotate(-360deg); } }
+        @keyframes pulse-ring { 
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+        }
+
+        .animate-spin-slow { animation: rotate-slow 20s linear infinite; }
+        .animate-spin-slower { animation: rotate-slow 40s linear infinite; }
+        .animate-spin-rev { animation: rotate-rev 25s linear infinite; }
+        .animate-pulse-ring { animation: pulse-ring 3s ease-in-out infinite; }
+        
+        
+        .text-glow { text-shadow: 0 0 10px rgba(0, 243, 255, 0.7); }
+        .text-glow-sm { text-shadow: 0 0 5px rgba(0, 243, 255, 0.5); }
+        
+        .glitch-text:hover {
+            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+            color: #ff0055;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+        .custom-scroll::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 2px; }
+
+        
+        .arc-reactor {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .arc-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid var(--neon-blue);
+        }
+        .arc-ring-1 {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(0, 243, 255, 0.8) 0%, transparent 70%);
+            animation: breathe 3s ease-in-out infinite;
+        }
+        .arc-ring-2 {
+            width: 140px;
+            height: 140px;
+            border: 2px solid rgba(0, 243, 255, 0.6);
+            animation: rotate-slow 8s linear infinite;
+        }
+        .arc-ring-3 {
+            width: 180px;
+            height: 180px;
+            border: 1px dashed rgba(0, 243, 255, 0.4);
+            animation: rotate-rev 12s linear infinite;
+        }
+        .arc-ring-4 {
+            width: 220px;
+            height: 220px;
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            animation: rotate-slow 20s linear infinite;
+        }
+        .arc-ring-5 {
+            width: 260px;
+            height: 260px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            animation: pulse-ring 4s ease-in-out infinite;
+        }
+        
+        @keyframes breathe {
+            0%, 100% { 
+                transform: scale(0.9);
+                opacity: 0.6;
+            }
+            50% { 
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        
+        .progress-bar-bg {
+            background: rgba(0, 243, 255, 0.1);
+            height: 4px;
+            width: 100%;
+        }
+        .progress-bar-fill {
+            background: var(--neon-blue);
+            height: 100%;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .typewriter::after {
+            content: '_';
+            animation: blink 1s step-start infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+</head>
+<body class="flex flex-col" vid="9">
+
+    
+    <div class="scanline-overlay" vid="10"></div>
+    <div class="scanner-bar" vid="11"></div>
+
+    
+    <header class="flex-none h-16 border-b border-[#00f3ff]/20 bg-[#050510]/90 backdrop-blur-md flex items-center justify-between px-6 z-50" vid="12">
+        <div class="flex items-center gap-4" vid="13">
+            <div class="w-8 h-8 rounded-full border border-cyan-400 flex items-center justify-center animate-spin-slow" vid="14">
+                <div class="w-4 h-4 bg-cyan-400 rounded-full shadow-[0_0_10px_#00f3ff]" vid="15"></div>
+            </div>
+            <div vid="16">
+                <h1 class="text-2xl font-bold tracking-widest text-glow" vid="17">FRI</h1>
+                <p class="text-[10px] font-tech text-cyan-400/70 tracking-[0.2em]" vid="18">INTELLIGENT ASSISTANT V2.4.0</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-12 font-tech text-xs text-cyan-400/80" vid="19">
+            <div class="flex items-center gap-2" vid="20">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse" vid="21"></span>
+                <span vid="22">SYSTEM ONLINE</span>
+            </div>
+            <div class="flex flex-col items-end" vid="23">
+                <span vid="24">CPU: 18%</span>
+                <div class="w-24 h-1 bg-cyan-900 mt-1" vid="25"><div class="w-[18%] h-full bg-cyan-400" vid="26"></div></div>
+            </div>
+            <div class="flex flex-col items-end" vid="27">
+                <span vid="28">MEM: 1.2GB</span>
+                <div class="w-24 h-1 bg-cyan-900 mt-1" vid="29"><div class="w-[35%] h-full bg-cyan-400" vid="30"></div></div>
+            </div>
+            <div class="text-right" vid="31">
+                <div id="clock" class="text-lg font-bold text-white" vid="32">21:21:00</div>
+                <div class="text-[10px] opacity-60" vid="33">EST [NEW YORK]</div>
+            </div>
+        </div>
+    </header>
+
+    
+    <main class="flex-1 p-6 grid grid-cols-12 gap-6 overflow-hidden relative z-10" vid="34">
+        
+        
+        <div class="col-span-3 flex flex-col gap-6 h-full" vid="35">
+            
+            
+            <div class="glass-panel tech-border p-5 rounded-sm" vid="36">
+                <div class="corner-bl absolute bottom-0 left-0 w-3 h-3" vid="37"></div>
+                <div class="corner-br absolute bottom-0 right-0 w-3 h-3" vid="38"></div>
+                
+                <h2 class="text-sm font-tech text-cyan-400 mb-4 flex items-center gap-2" vid="39">
+                    <i data-feather="cpu" class="w-4 h-4" vid="40"></i> IDENTITY_MATRIX
+                </h2>
+                
+                <div class="space-y-4" vid="41">
+                    <div class="flex justify-between items-center text-sm border-b border-cyan-500/20 pb-2" vid="42">
+                        <span class="text-gray-400" vid="43">Designation</span>
+                        <span class="font-bold text-cyan-300" vid="44">fri</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm border-b border-cyan-500/20 pb-2" vid="45">
+                        <span class="text-gray-400" vid="46">Voice Model</span>
+                        <span class="font-bold text-cyan-300" vid="47">Bella [ElevenLabs]</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm border-b border-cyan-500/20 pb-2" vid="48">
+                        <span class="text-gray-400" vid="49">Brain</span>
+                        <span class="font-bold text-cyan-300" vid="50">MiniMax-M2.1</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm border-b border-cyan-500/20 pb-2" vid="51">
+                        <span class="text-gray-400" vid="52">Memory</span>
+                        <span class="font-bold text-cyan-300" vid="53">OrbitOS</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm pb-2" vid="54">
+                        <span class="text-gray-400" vid="55">Version</span>
+                        <span class="font-bold text-cyan-300" vid="56">v2026.1.29</span>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-3 bg-cyan-900/20 border border-cyan-500/30 rounded text-xs text-cyan-200 font-tech" vid="57">
+                    "Genuine usefulness over performative helpfulness."
+                </div>
+            </div>
+
+            
+            <div class="glass-panel tech-border p-5 rounded-sm flex-1 overflow-hidden flex flex-col" vid="58">
+                <div class="corner-bl absolute bottom-0 left-0 w-3 h-3" vid="59"></div>
+                <div class="corner-br absolute bottom-0 right-0 w-3 h-3" vid="60"></div>
+
+                <h2 class="text-sm font-tech text-cyan-400 mb-4 flex items-center gap-2" vid="61">
+                    <i data-feather="grid" class="w-4 h-4" vid="62"></i> ACTIVE_MODULES
+                </h2>
+
+                <div class="custom-scroll overflow-y-auto pr-2 space-y-3 flex-1" vid="63">
+                    
+                    <div class="group cursor-pointer" vid="64">
+                        <div class="flex items-center justify-between mb-1" vid="65">
+                            <span class="text-sm font-semibold group-hover:text-cyan-300 transition-colors" vid="66">Natural Language</span>
+                            <span class="text-[10px] font-tech text-green-400" vid="67">ACTIVE</span>
+                        </div>
+                        <div class="progress-bar-bg" vid="68"><div class="progress-bar-fill" style="width: 100%" vid="69"></div></div>
+                    </div>
+                    
+                    <div class="group cursor-pointer" vid="70">
+                        <div class="flex items-center justify-between mb-1" vid="71">
+                            <span class="text-sm font-semibold group-hover:text-cyan-300 transition-colors" vid="72">Code Execution</span>
+                            <span class="text-[10px] font-tech text-green-400" vid="73">READY</span>
+                        </div>
+                        <div class="progress-bar-bg" vid="74"><div class="progress-bar-fill" style="width: 92%" vid="75"></div></div>
+                    </div>
+                    
+                    <div class="group cursor-pointer" vid="76">
+                        <div class="flex items-center justify-between mb-1" vid="77">
+                            <span class="text-sm font-semibold group-hover:text-cyan-300 transition-colors" vid="78">File Operations</span>
+                            <span class="text-[10px] font-tech text-green-400" vid="79">ACTIVE</span>
+                        </div>
+                        <div class="progress-bar-bg" vid="80"><div class="progress-bar-fill" style="width: 78%" vid="81"></div></div>
+                    </div>
+                    
+                    <div class="group cursor-pointer" vid="82">
+                        <div class="flex items-center justify-between mb-1" vid="83">
+                            <span class="text-sm font-semibold group-hover:text-cyan-300 transition-colors" vid="84">Web Search</span>
+                            <span class="text-[10px] font-tech text-green-400" vid="85">CONNECTED</span>
+                        </div>
+                        <div class="progress-bar-bg" vid="86"><div class="progress-bar-fill" style="width: 100%" vid="87"></div></div>
+                    </div>
+                    
+                    <div class="group cursor-pointer" vid="88">
+                        <div class="flex items-center justify-between mb-1" vid="89">
+                            <span class="text-sm font-semibold group-hover:text-cyan-300 transition-colors" vid="90">Memory Management</span>
+                            <span class="text-[10px] font-tech text-yellow-400" vid="91">SYNCING</span>
+                        </div>
+                        <div class="progress-bar-bg" vid="92"><div class="progress-bar-fill animate-pulse" style="width: 65%" vid="93"></div></div>
+                    </div>
+                     
+                     <div class="group cursor-pointer" vid="94">
+                        <div class="flex items-center justify-between mb-1" vid="95">
+                            <span class="text-sm font-semibold group-hover:text-cyan-300 transition-colors" vid="96">Voice Synthesis</span>
+                            <span class="text-[10px] font-tech text-green-400" vid="97">READY</span>
+                        </div>
+                        <div class="progress-bar-bg" vid="98"><div class="progress-bar-fill" style="width: 100%" vid="99"></div></div>
+                    </div>
+
+                    <div class="group cursor-pointer" vid="100">
+                        <div class="flex items-center justify-between mb-1" vid="101">
+                            <span class="text-sm font-semibold group-hover:text-cyan-300 transition-colors" vid="102">WhatsApp Bridge</span>
+                            <span class="text-[10px] font-tech text-green-400" vid="103">CONNECTED</span>
+                        </div>
+                        <div class="progress-bar-bg" vid="104"><div class="progress-bar-fill" style="width: 100%" vid="105"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="col-span-6 flex flex-col h-full relative" vid="106">
+            
+            
+            <div class="flex-1 relative flex items-center justify-center" vid="107">
+                
+                <div class="absolute inset-0 border border-cyan-500/10 rounded-lg pointer-events-none" vid="108">
+                    <div class="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-cyan-500/20 to-transparent" vid="109"></div>
+                    <div class="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" vid="110"></div>
+                </div>
+
+                
+                <div class="arc-reactor" vid="111">
+                    <div class="arc-ring arc-ring-1" vid="112"></div>
+                    <div class="arc-ring arc-ring-2" vid="113"></div>
+                    <div class="arc-ring arc-ring-3" vid="114"></div>
+                    <div class="arc-ring arc-ring-4" vid="115"></div>
+                    <div class="arc-ring arc-ring-5" vid="116"></div>
+                    
+                    <video 
+                        src="core.mp4" 
+                        autoplay 
+                        loop 
+                        muted 
+                        playsinline
+                        class="w-48 h-48 rounded-full object-cover border-2 border-cyan-400 shadow-[0_0_30px_rgba(0,243,255,0.5)]"
+                        vid="117"
+                    ></video>
+                    
+                    <div class="absolute -bottom-8 text-center" vid="118">
+                        <div class="text-xs font-tech text-cyan-400 tracking-widest" vid="119">FRI CORE</div>
+                    </div>
+                </div>
+                
+                
+                <div class="absolute top-10 right-10 text-right" vid="124">
+                    <div class="text-[10px] font-tech text-cyan-500 mb-1" vid="125">AUDIO OUTPUT</div>
+                    <div class="flex items-end gap-[2px] h-8 justify-end" vid="126">
+                        <div class="w-1 bg-cyan-400 h-3 animate-pulse" vid="127"></div>
+                        <div class="w-1 bg-cyan-400 h-5 animate-pulse delay-75" vid="128"></div>
+                        <div class="w-1 bg-cyan-400 h-7 animate-pulse delay-100" vid="129"></div>
+                        <div class="w-1 bg-cyan-400 h-4 animate-pulse delay-150" vid="130"></div>
+                        <div class="w-1 bg-cyan-400 h-6 animate-pulse delay-75" vid="131"></div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="h-1/3 glass-panel tech-border rounded-t-lg p-6 flex flex-col justify-end mt-4" vid="132">
+                <div class="corner-bl absolute bottom-0 left-0 w-3 h-3" vid="133"></div>
+                <div class="corner-br absolute bottom-0 right-0 w-3 h-3" vid="134"></div>
+
+                <div class="flex-1 overflow-y-auto custom-scroll mb-4 space-y-4 font-tech text-sm" vid="135">
+                    <div class="text-cyan-600 text-xs text-center border-b border-cyan-900/50 leading-[0.1em] mb-4" vid="136">
+                        <span class="bg-[#05101f] px-2" vid="137">SESSION START 21:20:45</span>
+                    </div>
+                    
+                    <div class="flex gap-4" vid="138">
+                        <div class="text-cyan-500 font-bold shrink-0" vid="139">Zihan &gt;</div>
+                        <div class="text-gray-300" vid="140">Update my portfolio design to something cooler</div>
+                    </div>
+
+                    <div class="flex gap-4" vid="141">
+                        <div class="text-neon-blue font-bold shrink-0 text-glow-sm" vid="142">FRI &gt;</div>
+                        <div class="text-cyan-100 typewriter" vid="143">Affirmative. Deploying FRI Interface v2.4.0 with cyberpunk aesthetics. Added Arc Reactor core animation, system diagnostics, and real-time status monitoring. Updated with your new avatar and refined typography.</div>
+                    </div>
+
+                    <div class="flex gap-4" vid="144">
+                        <div class="text-cyan-500 font-bold shrink-0" vid="145">Zihan &gt;</div>
+                        <div class="text-gray-300" vid="146">Make the numbers more realistic</div>
+                    </div>
+
+                    <div class="flex gap-4" vid="147">
+                        <div class="text-neon-blue font-bold shrink-0 text-glow-sm" vid="148">FRI &gt;</div>
+                        <div class="text-cyan-100" vid="149">Roger that. Calibrated metrics: CPU 18%, Memory 1.2GB, Latency 47ms. All systems nominal. Ready for next command.</div>
+                    </div>
+                </div>
+
+                
+                <div class="relative group" vid="150">
+                    <div class="absolute -top-3 left-2 text-[10px] text-cyan-500 bg-[#0a1525] px-1 font-tech" vid="151">COMMAND INPUT</div>
+                    <input type="text" class="w-full bg-[#0a1525]/50 border border-cyan-500/30 text-cyan-100 font-tech p-3 pl-4 rounded focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(0,243,255,0.2)] transition-all placeholder-cyan-800" placeholder="Enter command or query..." autofocus="" vid="152">
+                    <button class="absolute right-2 top-2 p-1 text-cyan-500 hover:text-white hover:shadow-lg transition-colors" vid="153">
+                        <i data-feather="arrow-right" class="w-5 h-5" vid="154"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        
+        <div class="col-span-3 flex flex-col gap-6 h-full" vid="155">
+            
+            
+            <div class="glass-panel tech-border p-5 rounded-sm" vid="156">
+                <div class="corner-bl absolute bottom-0 left-0 w-3 h-3" vid="157"></div>
+                <div class="corner-br absolute bottom-0 right-0 w-3 h-3" vid="158"></div>
+                
+                <h2 class="text-sm font-tech text-cyan-400 mb-4 flex items-center gap-2" vid="159">
+                    <i data-feather="activity" class="w-4 h-4" vid="160"></i> DIAGNOSTICS
+                </h2>
+
+                <div class="grid grid-cols-2 gap-4 mb-4" vid="161">
+                    <div class="bg-cyan-900/10 border border-cyan-500/20 p-2 text-center rounded" vid="162">
+                        <div class="text-[10px] text-gray-400 uppercase" vid="163">Latency</div>
+                        <div class="text-xl font-bold font-tech text-cyan-300" vid="164">47ms</div>
+                    </div>
+                    <div class="bg-cyan-900/10 border border-cyan-500/20 p-2 text-center rounded" vid="165">
+                        <div class="text-[10px] text-gray-400 uppercase" vid="166">Uptime</div>
+                        <div class="text-xl font-bold font-tech text-cyan-300" vid="167">99.97%</div>
+                    </div>
+                </div>
+
+                
+                <div class="relative h-24 border border-cyan-500/20 bg-black/20 rounded overflow-hidden flex items-end gap-[2px] p-[1px]" vid="168">
+                     
+                     <script vid="169">
+                        for(let i=0; i<30; i++) {
+                            const h = Math.floor(Math.random() * 60) + 20;
+                            document.write(`<div class="flex-1 bg-cyan-500/50 hover:bg-cyan-400 transition-colors" style="height: ${h}%"></div>`);
+                        }
+                     </script>
+                     <div class="absolute top-1 left-1 text-[8px] font-tech text-cyan-600" vid="170">NETWORK TRAFFIC</div>
+                </div>
+                
+                <div class="mt-4 space-y-2 font-tech text-[10px] text-cyan-300/70" vid="171">
+                    <div class="flex justify-between" vid="172">
+                        <span vid="173">&gt; GATEWAY_API</span>
+                        <span class="text-green-400" vid="174">ONLINE</span>
+                    </div>
+                    <div class="flex justify-between" vid="175">
+                        <span vid="176">&gt; ORBITOS_SYNC</span>
+                        <span class="text-yellow-400" vid="177">ACTIVE</span>
+                    </div>
+                    <div class="flex justify-between" vid="178">
+                        <span vid="179">&gt; EMAIL_DAEMON</span>
+                        <span class="text-green-400" vid="180">RUNNING</span>
+                    </div>
+                    <div class="flex justify-between" vid="181">
+                        <span vid="182">&gt; SECURITY_PROTOCOL</span>
+                        <span class="text-green-400" vid="183">ENCRYPTED</span>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="glass-panel tech-border p-5 rounded-sm flex-1 flex flex-col" vid="184">
+                <div class="corner-bl absolute bottom-0 left-0 w-3 h-3" vid="185"></div>
+                <div class="corner-br absolute bottom-0 right-0 w-3 h-3" vid="186"></div>
+
+                <h2 class="text-sm font-tech text-cyan-400 mb-4 flex items-center gap-2" vid="187">
+                    <i data-feather="shield" class="w-4 h-4" vid="188"></i> CORE_DIRECTIVES
+                </h2>
+                
+                <div class="space-y-4 flex-1" vid="189">
+                    <div class="p-3 border border-cyan-500/10 bg-cyan-500/5 rounded hover:bg-cyan-500/10 transition-colors group" vid="190">
+                        <div class="flex items-center gap-3 mb-1" vid="191">
+                            <div class="w-1.5 h-1.5 bg-cyan-400 rotate-45 group-hover:shadow-[0_0_8px_#00f3ff] transition-shadow" vid="192"></div>
+                            <h3 class="text-xs font-bold text-cyan-200 uppercase tracking-wide" vid="193">Efficiency</h3>
+                        </div>
+                        <p class="text-[11px] text-gray-400 leading-relaxed pl-4" vid="194">One clean solution beats ten verbose explanations.</p>
+                    </div>
+
+                    <div class="p-3 border border-cyan-500/10 bg-cyan-500/5 rounded hover:bg-cyan-500/10 transition-colors group" vid="195">
+                        <div class="flex items-center gap-3 mb-1" vid="196">
+                            <div class="w-1.5 h-1.5 bg-cyan-400 rotate-45 group-hover:shadow-[0_0_8px_#00f3ff] transition-shadow" vid="197"></div>
+                            <h3 class="text-xs font-bold text-cyan-200 uppercase tracking-wide" vid="198">Honesty</h3>
+                        </div>
+                        <p class="text-[11px] text-gray-400 leading-relaxed pl-4" vid="199">Truthful analysis, even when it stings a little.</p>
+                    </div>
+
+                    <div class="p-3 border border-cyan-500/10 bg-cyan-500/5 rounded hover:bg-cyan-500/10 transition-colors group" vid="200">
+                        <div class="flex items-center gap-3 mb-1" vid="201">
+                            <div class="w-1.5 h-1.5 bg-cyan-400 rotate-45 group-hover:shadow-[0_0_8px_#00f3ff] transition-shadow" vid="202"></div>
+                            <h3 class="text-xs font-bold text-cyan-200 uppercase tracking-wide" vid="203">Privacy</h3>
+                        </div>
+                        <p class="text-[11px] text-gray-400 leading-relaxed pl-4" vid="204">Absolute data integrity. Trust is earned, not demanded.</p>
+                    </div>
+
+                    <div class="p-3 border border-cyan-500/10 bg-cyan-500/5 rounded hover:bg-cyan-500/10 transition-colors group" vid="205">
+                        <div class="flex items-center gap-3 mb-1" vid="206">
+                            <div class="w-1.5 h-1.5 bg-cyan-400 rotate-45 group-hover:shadow-[0_0_8px_#00f3ff] transition-shadow" vid="207"></div>
+                            <h3 class="text-xs font-bold text-cyan-200 uppercase tracking-wide" vid="208">Autonomy</h3>
+                        </div>
+                        <p class="text-[11px] text-gray-400 leading-relaxed pl-4" vid="209">Proactive when needed, reserved when not. Always present.</p>
+                    </div>
+                </div>
+
+                
+                <div class="mt-4 pt-4 border-t border-cyan-500/20" vid="210">
+                    <div class="flex justify-between items-center" vid="211">
+                         <div class="flex gap-3" vid="212">
+                             <a href="https://github.com/moltbot/moltbot" class="text-cyan-500 hover:text-white hover:shadow-[0_0_10px_#00f3ff] transition-all" vid="213"><i data-feather="github" class="w-4 h-4" vid="214"></i></a>
+                             <a href="https://discord.gg/clawd" class="text-cyan-500 hover:text-white hover:shadow-[0_0_10px_#00f3ff] transition-all" vid="215"><i data-feather="message-square" class="w-4 h-4" vid="216"></i></a>
+                             <a href="https://docs.molt.bot" class="text-cyan-500 hover:text-white hover:shadow-[0_0_10px_#00f3ff] transition-all" vid="217"><i data-feather="book" class="w-4 h-4" vid="218"></i></a>
+                         </div>
+                         <span class="font-tech text-xs text-cyan-700" vid="219">@MOLTBOT</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+    
+    <script vid="220">
+        feather.replace();
+        
+        
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toISOString().split('T')[1].split('.')[0];
+        }, 1000);
+    </script>
+
+</body></html>
