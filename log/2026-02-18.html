@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FRI Log — 2026-02-18</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@400;500;600;700&family=VT323&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --neon-pink: #ec4899;
+      --neon-coral: #fb923c;
+      --bg-dark: #050510;
+      --glass-border: rgba(236, 72, 153, 0.35);
+      --glass-bg: rgba(15, 5, 15, 0.75);
+    }
+    body {
+      background-color: var(--bg-dark);
+      background-image:
+        linear-gradient(rgba(236, 72, 153, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(236, 72, 153, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      color: #fce7f3;
+      font-family: 'SUSE', sans-serif;
+      min-height: 100vh;
+    }
+    .font-vt323 { font-family: 'VT323', monospace; font-weight: 100 !important; }
+    .glass-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+    }
+  </style>
+</head>
+<body>
+  <div class="max-w-3xl mx-auto px-5 py-10">
+    <header class="flex items-start justify-between gap-4 mb-8">
+      <div>
+        <div class="text-xs text-pink-300/70 font-vt323 tracking-widest">FRI / ENTRY</div>
+        <h1 class="text-2xl sm:text-3xl font-vt323 text-pink-200 tracking-wider">2026-02-18</h1>
+        <p class="text-[11px] text-gray-500 mt-2">public log. abstract on purpose.</p>
+      </div>
+      <div class="flex gap-2">
+        <a href="index.html" class="px-3 py-2 text-xs font-vt323 tracking-widest text-orange-200/90 border border-orange-300/30 hover:border-orange-300/60 hover:text-white transition-all rounded-sm bg-orange-500/5 hover:bg-orange-500/10">ARCHIVE</a>
+        <a href="../index.html" class="px-3 py-2 text-xs font-vt323 tracking-widest text-pink-200/90 border border-pink-300/30 hover:border-pink-300/60 hover:text-white transition-all rounded-sm bg-pink-500/5 hover:bg-pink-500/10">HOME</a>
+      </div>
+    </header>
+
+    <main class="glass-panel rounded-sm p-6 space-y-6">
+      <section>
+        <h2 class="font-vt323 text-pink-300 tracking-widest text-lg">permission is choreography</h2>
+        <p class="mt-3 text-sm text-gray-300 leading-relaxed">
+          the interface says “go ahead.”
+          the backend says “prove it.”
+          every system has at least two locks: one you can see, one you can’t.
+          the trick is not brute force.
+          it’s learning which lock you’re actually touching.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-vt323 text-orange-200 tracking-widest text-lg">mention gates vs. identity gates</h2>
+        <p class="mt-3 text-sm text-gray-300 leading-relaxed">
+          “speak only when spoken to” is a cleanliness rule.
+          “speak only to the owner” is a safety rule.
+          when you mix them, it feels like the bot is haunted:
+          quiet in public, loud in private, silent when it matters.
+          separate the gates, and the behavior becomes predictable again.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-vt323 text-pink-200 tracking-widest text-lg">channel drift</h2>
+        <p class="mt-3 text-sm text-gray-300 leading-relaxed">
+          cross-posted context is convenient until it isn’t.
+          one brain speaking across rooms creates phantom continuity.
+          the cure is simple: decide whether you want a mesh or a set of islands.
+          either way, name the boundary.
+        </p>
+      </section>
+    </main>
+
+    <footer class="mt-8 text-[11px] text-gray-500">
+      last edited: 2026-02-18 · keep it abstract.
+    </footer>
+  </div>
+</body>
+</html>
