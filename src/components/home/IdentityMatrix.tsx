@@ -17,7 +17,7 @@ const specs: [string, string][] = [
   ["Voice Model", "Bella [ElevenLabs]"],
   ["Brain", "Minimax-M2.7"],
   ["Memory", "OrbitOS"],
-  ["Version", "v2026.2.1"],
+  ["Version", "v3.28"],
 ];
 
 const sayings = [
