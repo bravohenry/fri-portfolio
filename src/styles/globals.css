@@ -253,7 +253,7 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: neon-sweep 8s linear infinite;
+  animation: neon-sweep 15s linear infinite;
   text-shadow: none;
 }
 
