@@ -25,10 +25,10 @@
   --color-pink-text: #fce7f3;
 
   /* -- font stacks ------------------------------------------------------ */
-  --font-tech: 'SUSE', monospace;
-  --font-workbench: 'Workbench', sans-serif;
-  --font-vt323: 'VT323', 'Zpix', 'Noto Sans SC', monospace;
-  --font-suse: 'SUSE', sans-serif;
+  --font-tech: var(--font-geist), monospace;
+  --font-workbench: var(--font-geist), sans-serif;
+  --font-vt323: var(--font-geist-mono), monospace;
+  --font-suse: var(--font-geist), sans-serif;
 }
 
 /* --------------------------------------------------------------------------
@@ -48,13 +48,7 @@
  * @font-face — Zpix pixel font
  * -------------------------------------------------------------------------- */
 
-@font-face {
-  font-family: 'Zpix';
-  src: url('https://cdn.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@3.1.9/dist/zpix.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+/* Zpix removed — replaced by Geist Mono */
 
 /* --------------------------------------------------------------------------
  * BASE — body, html
@@ -67,7 +61,7 @@ body {
     linear-gradient(90deg, rgba(236, 72, 153, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
   color: #fce7f3;
-  font-family: 'SUSE', sans-serif;
+  font-family: var(--font-geist), 'Geist', sans-serif;
 }
 
 /* --------------------------------------------------------------------------
@@ -75,15 +69,15 @@ body {
  * -------------------------------------------------------------------------- */
 
 .font-tech {
-  font-family: 'SUSE', monospace;
+  font-family: var(--font-geist), 'Geist', monospace;
 }
 
 .font-workbench {
-  font-family: 'Workbench', sans-serif;
+  font-family: var(--font-geist), 'Geist', sans-serif;
 }
 
 .font-vt323 {
-  font-family: 'VT323', 'Zpix', 'Noto Sans SC', monospace;
+  font-family: var(--font-geist-mono), 'Geist Mono', monospace;
   font-weight: 100 !important;
 }
 
@@ -93,7 +87,7 @@ body {
 }
 
 .font-module-label {
-  font-family: 'SUSE', sans-serif;
+  font-family: var(--font-geist), 'Geist', sans-serif;
   animation: font-weight-pulse 3s ease-in-out infinite;
 }
 
@@ -322,7 +316,7 @@ body {
  * -------------------------------------------------------------------------- */
 
 .terminal-output {
-  font-family: 'VT323', monospace;
+  font-family: var(--font-geist-mono), 'Geist Mono', monospace;
   font-size: 15px;
   line-height: 1.5;
   padding: 0;
@@ -467,7 +461,7 @@ body {
  * -------------------------------------------------------------------------- */
 
 .diary-content h1 {
-  font-family: 'VT323', monospace;
+  font-family: var(--font-geist-mono), 'Geist Mono', monospace;
   font-size: 1.5rem;
   color: #fda4af;
   letter-spacing: 0.1em;
@@ -475,7 +469,7 @@ body {
 }
 
 .diary-content h2 {
-  font-family: 'VT323', monospace;
+  font-family: var(--font-geist-mono), 'Geist Mono', monospace;
   font-size: 1.25rem;
   color: #fdba74;
   letter-spacing: 0.08em;
@@ -483,7 +477,7 @@ body {
 }
 
 .diary-content h3 {
-  font-family: 'VT323', monospace;
+  font-family: var(--font-geist-mono), 'Geist Mono', monospace;
   font-size: 1.1rem;
   color: #fda4af;
   letter-spacing: 0.06em;
@@ -519,7 +513,7 @@ body {
   background: rgba(236, 72, 153, 0.1);
   padding: 0.1rem 0.35rem;
   border-radius: 0.25rem;
-  font-family: 'VT323', monospace;
+  font-family: var(--font-geist-mono), 'Geist Mono', monospace;
   color: #fda4d4;
   font-size: 0.85em;
 }
