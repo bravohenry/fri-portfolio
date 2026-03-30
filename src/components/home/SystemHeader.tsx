@@ -78,7 +78,7 @@ export function SystemHeader() {
       <div className="flex items-center gap-3 md:gap-12 font-tech text-[10px] md:text-xs text-pink-400/85 shrink-0">
         {/* status dot */}
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shrink-0" />
+          <span className="status-dot w-2 h-2 bg-green-500 animate-pulse shrink-0" />
           <span className="hidden sm:inline">SYSTEM ONLINE</span>
         </div>
 

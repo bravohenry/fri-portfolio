@@ -9,6 +9,15 @@
 
 @import "tailwindcss";
 
+/* ---- Global: no border-radius anywhere ---- */
+*, *::before, *::after {
+  border-radius: 0 !important;
+}
+/* exceptions: status dot + arc reactor video need to stay round */
+.status-dot, .arc-video, .arc-ring {
+  border-radius: 50% !important;
+}
+
 /* --------------------------------------------------------------------------
  * THEME — brand tokens exposed to Tailwind utilities
  * In Tailwind v4 this replaces tailwind.config.ts

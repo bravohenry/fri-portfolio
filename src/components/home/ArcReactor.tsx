@@ -71,7 +71,7 @@ export default function ArcReactor() {
           loop
           muted
           playsInline
-          className="w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 rounded-full object-cover border-2 border-pink-400"
+          className="arc-video w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 object-cover border-2 border-pink-400"
         />
 
         <div className="absolute -bottom-10 md:-bottom-12 text-center">
