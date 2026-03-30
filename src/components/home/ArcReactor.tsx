@@ -110,7 +110,7 @@ export default function ArcReactor({ fragments = [] }: { fragments?: string[] })
         />
 
         <div className="absolute -bottom-10 md:-bottom-12 text-center">
-          <div className="text-[10px] md:text-xs font-tech text-pink-400 tracking-widest">
+          <div className="text-[10px] md:text-xs font-tech tracking-widest neon-shimmer">
             {status || "FRI CORE"}
           </div>
         </div>

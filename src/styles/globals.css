@@ -237,6 +237,31 @@ body {
   align-items: center;
 }
 
+/* ---- neon shimmer — thinking/status light sweep ---- */
+.neon-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(236, 72, 153, 0.4) 0%,
+    rgba(236, 72, 153, 0.4) 30%,
+    rgba(236, 72, 153, 0.9) 45%,
+    rgba(255, 200, 230, 1) 50%,
+    rgba(236, 72, 153, 0.9) 55%,
+    rgba(236, 72, 153, 0.4) 70%,
+    rgba(236, 72, 153, 0.4) 100%
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: neon-sweep 2.5s ease-in-out infinite;
+  text-shadow: none;
+}
+
+@keyframes neon-sweep {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
 .arc-ring {
   position: absolute;
   border-radius: 50%;
