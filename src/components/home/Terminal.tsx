@@ -8,6 +8,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import type { SiteStats } from "@/lib/stats";
 
 /* ------------------------------------------------------------------ */
@@ -53,13 +54,16 @@ function formatWords(n: number): string {
   return n >= 1000 ? `${(n / 1000).toFixed(1)}k` : String(n);
 }
 
+function getRandomPath(): string {
+  const slug = DIARY_SLUGS[Math.floor(Math.random() * DIARY_SLUGS.length)];
+  return `/diary/${slug}`;
+}
+
 function buildSlashReplies(s: SiteStats): Record<string, string> {
-  const randomSlug = DIARY_SLUGS[Math.floor(Math.random() * DIARY_SLUGS.length)];
   return {
     help: "Commands: /latest, /stats, /random, /about. Or type anything.",
     latest: `Recent: [${s.lastEntryDate}] ${s.lastEntryAge} | See /diary or /weekly for full archive.`,
     stats: `${s.totalEntries} entries. ${formatWords(s.totalWords)} words. ${s.daysSinceLaunch} days online. ${s.thisWeekCount} posts this week.`,
-    random: `Navigating to /diary/${randomSlug}...`,
     about: "FRI \u2014 a portfolio and content platform. Diary (Chinese, personal). Weekly (English, design engineering). Built with Next.js, deployed on Vercel.",
     status: `${s.totalEntries} entries indexed. ${s.cachedUrls} link previews cached. Deploy: Vercel. All systems nominal.`,
   };
@@ -98,6 +102,7 @@ function getReply(text: string, slashReplies: Record<string, string>): string {
 /* ------------------------------------------------------------------ */
 
 export function Terminal({ stats }: TerminalProps) {
+  const router = useRouter();
   const [expanded, setExpanded] = useState(false);
   const slashReplies = useMemo(() => buildSlashReplies(stats), [stats]);
   const [lines, setLines] = useState<Line[]>(() => buildInitialLines(stats));
@@ -129,13 +134,30 @@ export function Terminal({ stats }: TerminalProps) {
     const text = input.trim();
     if (!text || typingText !== null) return;
 
-    const reply = getReply(text, slashReplies);
-    setInput("");
+    const cmd = text.startsWith("/") ? text.slice(1).split(/\s/)[0].toLowerCase() : "";
+    let reply: string;
+    let navigateTo: string | null = null;
 
-    /* Append user line immediately */
+    if (cmd === "random") {
+      const path = getRandomPath();
+      reply = `Friday: Navigating to ${path}...`;
+      navigateTo = path;
+    } else if (cmd === "latest") {
+      reply = getReply(text, slashReplies);
+      navigateTo = "/weekly";
+    } else if (cmd === "diary") {
+      reply = "Friday: Opening diary...";
+      navigateTo = "/diary";
+    } else if (cmd === "weekly") {
+      reply = "Friday: Opening weekly archive...";
+      navigateTo = "/weekly";
+    } else {
+      reply = getReply(text, slashReplies);
+    }
+
+    setInput("");
     setLines((prev) => [...prev, { type: "user", text }]);
 
-    /* Start typing effect for reply */
     setTypingText("");
     let pos = 0;
 
@@ -145,14 +167,16 @@ export function Terminal({ stats }: TerminalProps) {
       if (pos < reply.length) {
         typingRef.current = setTimeout(typeTick, TYPE_MS);
       } else {
-        /* Typing done — commit the line */
         setTypingText(null);
         setLines((prev) => [...prev, { type: "output", text: reply }]);
+        if (navigateTo) {
+          setTimeout(() => router.push(navigateTo!), 400);
+        }
       }
     }
 
     typingRef.current = setTimeout(typeTick, TYPE_MS);
-  }, [input, typingText, slashReplies]);
+  }, [input, typingText, slashReplies, router]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
