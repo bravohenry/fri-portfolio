@@ -155,6 +155,7 @@ body {
 .tech-border > .corner-bl, .tech-border > .corner-br {
   content: '';
   position: absolute;
+  box-sizing: content-box;
   width: 12px;
   height: 12px;
   border: 2px solid transparent;
