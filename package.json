@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "bash scripts/fetch-diary.sh && next build",
+    "build": "bash scripts/fetch-content.sh && next build",
     "start": "next start",
     "lint": "eslint"
   },

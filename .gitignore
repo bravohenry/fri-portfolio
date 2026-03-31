@@ -8,3 +8,4 @@ next-env.d.ts
 .env*.local
 matrix-rain-playground.html
 content/diary/
+content/weekly/
