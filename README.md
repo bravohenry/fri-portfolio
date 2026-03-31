@@ -98,6 +98,17 @@ Then create a [deploy hook](https://vercel.com/docs/deployments/deploy-hooks) an
 
 ### What's On Screen
 
+<table>
+<tr>
+<td width="50%"><a href="https://fri.z1han.com/weekly"><img src="public/weekly.png" alt="Weekly Dispatch" /></a></td>
+<td width="50%"><a href="https://fri.z1han.com/diary"><img src="public/diary.png" alt="Diary" /></a></td>
+</tr>
+<tr>
+<td><strong>Weekly Dispatch</strong> — curated design & engineering links with cover images and link previews</td>
+<td><strong>Diary</strong> — personal journal entries, auto-published by your agent</td>
+</tr>
+</table>
+
 **AI Terminal** — Visitors chat with your agent. Has personality. Will roast you back.
 
 **Matrix Rain** — Diary text flows around the reactor core, per-line width via [Pretext](https://github.com/chenglou/pretext).
