@@ -1,7 +1,7 @@
 /**
  * [INPUT]: @/lib/content (Entry type), next/link, ./CoverImage
- * [OUTPUT]: EntryList — card-based list with cover images and glass panels
- * [POS]: components/content/ shared renderer, consumed by diary/page.tsx and weekly/page.tsx
+ * [OUTPUT]: EntryList — card-based list; daily type renders Windows 2000 Explorer view
+ * [POS]: components/content/ shared renderer, consumed by diary/page.tsx, weekly/page.tsx, daily/page.tsx
  * [PROTOCOL]: update this header on change, then check CLAUDE.md
  */
 
@@ -21,10 +21,175 @@ interface EntryListProps {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Win2K Explorer List — only for daily type                         */
+/* ------------------------------------------------------------------ */
+
+function Win2KEntryList({ entries, title, subtitle }: Omit<EntryListProps, "type">) {
+  return (
+    <div className="win2k-desktop">
+      <div className="win2k-window win2k-window-list">
+
+        {/* ── Title Bar ───────────────────────────────────────────── */}
+        <div className="win2k-titlebar" role="banner" aria-label="Window title bar">
+          <div className="win2k-titlebar-left">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" className="win2k-titlebar-icon">
+              <rect x="1" y="1" width="6" height="6" fill="#fff" />
+              <rect x="9" y="1" width="6" height="6" fill="#ff0" />
+              <rect x="1" y="9" width="6" height="6" fill="#f00" />
+              <rect x="9" y="9" width="6" height="6" fill="#0f0" />
+            </svg>
+            <span className="win2k-titlebar-title">{title}</span>
+          </div>
+          <div className="win2k-titlebar-buttons" aria-label="Window controls">
+            <button className="win2k-btn-chrome win2k-btn-min" title="Minimize" aria-label="Minimize">_</button>
+            <button className="win2k-btn-chrome win2k-btn-max" title="Maximize" aria-label="Maximize">□</button>
+            <button className="win2k-btn-chrome win2k-btn-close" title="Close" aria-label="Close">✕</button>
+          </div>
+        </div>
+
+        {/* ── Menu Bar ────────────────────────────────────────────── */}
+        <nav className="win2k-menubar" aria-label="Menu bar">
+          <span className="win2k-menu-item"><u>F</u>ile</span>
+          <span className="win2k-menu-item"><u>E</u>dit</span>
+          <span className="win2k-menu-item"><u>V</u>iew</span>
+          <span className="win2k-menu-item">F<u>a</u>vorites</span>
+          <span className="win2k-menu-item"><u>T</u>ools</span>
+          <span className="win2k-menu-item"><u>H</u>elp</span>
+        </nav>
+
+        {/* ── Toolbar ─────────────────────────────────────────────── */}
+        <div className="win2k-toolbar" aria-label="Navigation toolbar">
+          <Link href="/" className="win2k-toolbar-btn" title="Back">
+            <span aria-hidden="true">◄</span>
+            <span className="win2k-toolbar-label">Back</span>
+          </Link>
+          <button className="win2k-toolbar-btn win2k-toolbar-btn-disabled" disabled aria-disabled="true" title="Forward">
+            <span aria-hidden="true">►</span>
+            <span className="win2k-toolbar-label">Forward</span>
+          </button>
+          <div className="win2k-toolbar-sep" aria-hidden="true" />
+          <button className="win2k-toolbar-btn" title="Refresh">
+            <span aria-hidden="true">↻</span>
+            <span className="win2k-toolbar-label">Refresh</span>
+          </button>
+          <Link href="/" className="win2k-toolbar-btn" title="Home">
+            <span aria-hidden="true">⌂</span>
+            <span className="win2k-toolbar-label">Home</span>
+          </Link>
+          <div className="win2k-toolbar-sep" aria-hidden="true" />
+          <button className="win2k-toolbar-btn" title="Views">
+            <span aria-hidden="true">▤</span>
+            <span className="win2k-toolbar-label">Views</span>
+          </button>
+        </div>
+
+        {/* ── Address Bar ─────────────────────────────────────────── */}
+        <div className="win2k-addressbar" aria-label="Address bar">
+          <label htmlFor="win2k-address-list" className="win2k-address-label">Address</label>
+          <div className="win2k-address-field">
+            <span className="win2k-address-globe" aria-hidden="true">📁</span>
+            <input
+              id="win2k-address-list"
+              className="win2k-address-input"
+              readOnly
+              value="C:\My Documents\Daily"
+              aria-label="Current location"
+            />
+            <button className="win2k-address-go" aria-label="Go">Go</button>
+          </div>
+        </div>
+
+        {/* ── Content Area ────────────────────────────────────────── */}
+        <div className="win2k-content-area win2k-content-area-list">
+
+          {/* Left Explorer Panel */}
+          <aside className="win2k-explorer-panel" aria-label="Explorer panel">
+            <div className="win2k-explorer-header">Folders</div>
+            <ul className="win2k-tree" role="tree" aria-label="Folder tree">
+              <li role="treeitem" aria-expanded="true" className="win2k-tree-item win2k-tree-item-open">
+                <span aria-hidden="true">📁</span> My Documents
+              </li>
+              <li role="treeitem" aria-selected="true" className="win2k-tree-item win2k-tree-sub win2k-tree-selected">
+                <span aria-hidden="true">📂</span> Daily
+              </li>
+              <li role="treeitem" className="win2k-tree-item win2k-tree-sub">
+                <span aria-hidden="true">📁</span> Diary
+              </li>
+              <li role="treeitem" className="win2k-tree-item win2k-tree-sub">
+                <span aria-hidden="true">📁</span> Weekly
+              </li>
+            </ul>
+            <hr className="win2k-explorer-hr" />
+            <div className="win2k-detail-box" aria-label="Folder details">
+              <div className="win2k-detail-title">Daily</div>
+              <div className="win2k-detail-info">{entries.length} objects</div>
+              <div className="win2k-detail-info">Type: File Folder</div>
+            </div>
+          </aside>
+
+          {/* Main List View */}
+          <main className="win2k-list-pane" aria-label="File list">
+            {/* Description banner */}
+            <div className="win2k-list-banner">
+              <div className="win2k-list-banner-icon" aria-hidden="true">📂</div>
+              <div className="win2k-list-banner-text">
+                <div className="win2k-list-banner-title">{title}</div>
+                <div className="win2k-list-banner-sub">{subtitle}</div>
+              </div>
+            </div>
+
+            {/* Column headers */}
+            <div className="win2k-list-header" role="row" aria-label="Column headers">
+              <span className="win2k-col win2k-col-icon" aria-hidden="true"></span>
+              <span className="win2k-col win2k-col-name" role="columnheader">Name</span>
+              <span className="win2k-col win2k-col-date" role="columnheader">Date Modified</span>
+              <span className="win2k-col win2k-col-type" role="columnheader">Type</span>
+              <span className="win2k-col win2k-col-size" role="columnheader">Size</span>
+            </div>
+
+            {/* File rows */}
+            <div className="win2k-list-body" role="list" aria-label="Daily briefings">
+              {entries.length === 0 && (
+                <div className="win2k-list-empty">This folder is empty.</div>
+              )}
+              {entries.map((entry) => (
+                <Link
+                  key={entry.slug}
+                  href={`/daily/${entry.slug}`}
+                  className="win2k-list-row"
+                  role="listitem"
+                  aria-label={`Open ${entry.title}`}
+                >
+                  <span className="win2k-col win2k-col-icon" aria-hidden="true">📄</span>
+                  <span className="win2k-col win2k-col-name win2k-list-name">{entry.title}</span>
+                  <span className="win2k-col win2k-col-date">{entry.date}</span>
+                  <span className="win2k-col win2k-col-type">Text Document</span>
+                  <span className="win2k-col win2k-col-size">~2 KB</span>
+                </Link>
+              ))}
+            </div>
+          </main>
+        </div>
+
+        {/* ── Status Bar ──────────────────────────────────────────── */}
+        <div className="win2k-statusbar" role="status" aria-label="Status bar">
+          <span className="win2k-status-item win2k-status-main">{entries.length} object(s)</span>
+          <span className="win2k-status-item">My Computer</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
 export function EntryList({ entries, type, title, subtitle }: EntryListProps) {
+  if (type === "daily") {
+    return <Win2KEntryList entries={entries} title={title} subtitle={subtitle} />;
+  }
+
   const latest = entries.slice(0, 3);
   const rest = entries.slice(3);
 
