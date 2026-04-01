@@ -15,7 +15,7 @@ import { CoverImage } from "./CoverImage";
 
 interface EntryPageProps {
   entry: Entry;
-  type: "diary" | "weekly";
+  type: "diary" | "weekly" | "daily";
   backHref: string;
 }
 
@@ -32,7 +32,7 @@ export function EntryPage({ entry, type, backHref }: EntryPageProps) {
           href={backHref}
           className="mb-8 inline-block font-vt323 text-sm tracking-widest text-neon-pink opacity-60 hover:opacity-100 transition-opacity"
         >
-          &larr; BACK TO {type === "diary" ? "DIARY" : "WEEKLY"}
+          &larr; BACK TO {type === "diary" ? "DIARY" : type === "daily" ? "DAILY" : "WEEKLY"}
         </Link>
 
         {/* -- cover ------------------------------------------------- */}

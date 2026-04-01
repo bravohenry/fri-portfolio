@@ -15,7 +15,7 @@ import { CoverImage } from "./CoverImage";
 
 interface EntryListProps {
   entries: Entry[];
-  type: "diary" | "weekly";
+  type: "diary" | "weekly" | "daily";
   title: string;
   subtitle: string;
 }

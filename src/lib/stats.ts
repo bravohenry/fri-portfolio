@@ -14,6 +14,7 @@ const LAUNCH_DATE = new Date(2026, 0, 30, 22, 0, 0);
 export interface SiteStats {
   diaryCount: number;
   weeklyCount: number;
+  dailyCount: number;
   totalEntries: number;
   totalWords: number;
   daysSinceLaunch: number;
@@ -58,9 +59,11 @@ function relativeTime(dateStr: string): string {
 export function getSiteStats(): SiteStats {
   const diaryFiles = getFiles("diary");
   const weeklyFiles = getFiles("weekly");
+  const dailyFiles = getFiles("daily");
   const allFiles = [
     ...diaryFiles.map((f) => ({ f, dir: "diary" })),
     ...weeklyFiles.map((f) => ({ f, dir: "weekly" })),
+    ...dailyFiles.map((f) => ({ f, dir: "daily" })),
   ];
 
   let totalWords = 0;
@@ -108,6 +111,7 @@ export function getSiteStats(): SiteStats {
   return {
     diaryCount: diaryFiles.length,
     weeklyCount: weeklyFiles.length,
+    dailyCount: dailyFiles.length,
     totalEntries: allFiles.length,
     totalWords: Math.round(totalWords / 100) * 100,
     daysSinceLaunch,

@@ -57,7 +57,7 @@ function parseFrontmatter(raw: string): {
 /* ------------------------------------------------------------------ */
 
 export async function getEntries(
-  type: "diary" | "weekly"
+  type: "diary" | "weekly" | "daily"
 ): Promise<Entry[]> {
   const dir = path.join(CONTENT_DIR, type);
   if (!fs.existsSync(dir)) return [];
