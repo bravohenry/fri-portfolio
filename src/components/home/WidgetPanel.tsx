@@ -1,7 +1,7 @@
 /**
  * [INPUT]: TechBorder, Entry type, next/link
- * [OUTPUT]: WidgetPanel — switchable widget: WEEKLY preview (default) or ACTIVE_MODULES
- * [POS]: home/ left-column bottom panel, replaces ActiveModules
+ * [OUTPUT]: WidgetPanel — XP-style switchable widget panel
+ * [POS]: home/ left-column bottom panel
  * [PROTOCOL]: update this header on change, then check CLAUDE.md
  */
 
@@ -36,13 +36,13 @@ type Tab = "daily" | "weekly" | "stack";
 /* ------------------------------------------------------------------ */
 
 const modules = [
-  { name: "Next.js 16", status: "SSG", statusVar: "var(--text-status)", base: 100 },
-  { name: "Tailwind v4", status: "LOADED", statusVar: "var(--text-status)", base: 100 },
-  { name: "Markdown Pipeline", status: "ACTIVE", statusVar: "var(--text-status)", base: 100 },
-  { name: "Link Preview (OG)", status: "CACHED", statusVar: "var(--text-status)", base: 92 },
-  { name: "Geist Pixel", status: "LOADED", statusVar: "var(--text-status)", base: 100 },
-  { name: "Pretext", status: "READY", statusVar: "var(--text-status-ready)", base: 65 },
-  { name: "Vercel Deploy", status: "CONNECTED", statusVar: "var(--text-status)", base: 100 },
+  { name: "Next.js 16", status: "SSG", statusVar: "#3a6e00", base: 100 },
+  { name: "Tailwind v4", status: "LOADED", statusVar: "#3a6e00", base: 100 },
+  { name: "Markdown Pipeline", status: "ACTIVE", statusVar: "#3a6e00", base: 100 },
+  { name: "Link Preview (OG)", status: "CACHED", statusVar: "#3a6e00", base: 92 },
+  { name: "Geist Pixel", status: "LOADED", statusVar: "#3a6e00", base: 100 },
+  { name: "Pretext", status: "READY", statusVar: "#7a5200", base: 65 },
+  { name: "Vercel Deploy", status: "CONNECTED", statusVar: "#3a6e00", base: 100 },
 ] as const;
 
 /* ------------------------------------------------------------------ */
@@ -85,152 +85,246 @@ export function WidgetPanel({ dailyEntries, weeklyEntries }: WidgetPanelProps) {
   const recent = weeklyEntries.slice(0, 5);
 
   return (
-    <TechBorder className="p-5 flex-1 overflow-hidden flex flex-col">
-      {/* ---- Tab switcher ---- */}
-      <div className="flex items-center justify-between mb-4 shrink-0">
-        <div className="flex gap-1">
-          {(["daily", "weekly", "stack"] as const).map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className="px-2 py-1 text-[10px] font-vt323 tracking-widest transition-colors border border-transparent"
-              style={
-                tab === t
-                  ? { color: 'var(--text-tab-active)', background: 'var(--bg-tab-active)', border: '1px solid var(--border-tab-active)' }
-                  : { color: 'var(--text-tab-inactive)' }
-              }
-            >
-              {t.toUpperCase()}
-            </button>
-          ))}
+    <TechBorder className="flex-1 overflow-hidden flex flex-col">
+      {/* XP Titlebar */}
+      <div className="xp-titlebar shrink-0">
+        <div className="xp-titlebar-text">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <rect x="1" y="3" width="14" height="10" fill="#c8e0f8" stroke="#7090c0" strokeWidth="0.8"/>
+            <rect x="1" y="3" width="14" height="3" fill="#7090c0"/>
+            <line x1="4" y1="10" x2="12" y2="10" stroke="#7090c0" strokeWidth="0.8"/>
+          </svg>
+          CONTENT BROWSER
         </div>
+        <div className="flex items-center gap-0.5">
+          <button className="xp-btn-min" aria-label="Minimize" title="Minimize">
+            <span style={{ fontSize: '7px', lineHeight: 1 }}>─</span>
+          </button>
+          <button className="xp-btn-max" aria-label="Maximize" title="Maximize">
+            <span style={{ fontSize: '7px', lineHeight: 1 }}>□</span>
+          </button>
+          <button className="xp-btn-close" aria-label="Close" title="Close">
+            <span style={{ fontSize: '9px', fontWeight: 'bold', lineHeight: 1 }}>✕</span>
+          </button>
+        </div>
+      </div>
+
+      {/* XP tab bar */}
+      <div
+        className="flex items-center gap-0 shrink-0"
+        style={{
+          background: 'linear-gradient(180deg, #f5f4ea 0%, #ece9d8 100%)',
+          borderBottom: '2px solid #0a246a',
+          padding: '4px 4px 0',
+        }}
+      >
+        {(["daily", "weekly", "stack"] as const).map((t) => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className="px-3 py-1 text-xs transition-colors"
+            style={
+              tab === t
+                ? {
+                    background: '#ece9d8',
+                    border: '1px solid #848484',
+                    borderBottom: '1px solid #ece9d8',
+                    color: '#000000',
+                    fontFamily: 'Tahoma, sans-serif',
+                    fontSize: '11px',
+                    fontWeight: 'bold',
+                    marginBottom: '-2px',
+                    zIndex: 1,
+                    position: 'relative',
+                  }
+                : {
+                    background: 'transparent',
+                    border: '1px solid transparent',
+                    color: '#595959',
+                    fontFamily: 'Tahoma, sans-serif',
+                    fontSize: '11px',
+                  }
+            }
+          >
+            {t === "daily" ? "Daily" : t === "weekly" ? "Weekly" : "Stack"}
+          </button>
+        ))}
         {(tab === "daily" || tab === "weekly") && (
           <Link
             href={`/${tab}`}
-            className="text-[9px] font-vt323 text-neon-coral/60 hover:text-neon-coral tracking-widest transition-colors"
+            className="ml-auto mr-2 text-xs transition-colors"
+            style={{ color: '#0000cc', fontSize: '10px', fontFamily: 'Tahoma, sans-serif', textDecoration: 'underline' }}
           >
-            VIEW ALL →
+            View All
           </Link>
         )}
       </div>
 
-      {/* ---- Daily digest preview ---- */}
-      {tab === "daily" && (
-        <div className="custom-scroll overflow-y-auto pr-1 space-y-2 flex-1">
-          {dailyEntries.slice(0, 5).map((entry) => (
-            <Link
-              key={entry.slug}
-              href={`/daily/${entry.slug}`}
-              className="group flex gap-3 p-2 transition-all border border-transparent"
-            >
-              <div className="flex-1 min-w-0">
-                <h3
-                  className="text-xs font-vt323 transition-colors truncate"
-                  style={{ color: 'var(--text-card-title)' }}
-                >
-                  {entry.title}
-                </h3>
-                <time
-                  className="text-[9px] font-vt323 tracking-wider"
-                  style={{ color: 'var(--text-dim)' }}
-                >
-                  {entry.date}
-                </time>
-                {entry.summary && (
-                  <p
-                    className="text-[9px] line-clamp-2 mt-0.5"
-                    style={{ color: 'var(--text-dim)' }}
-                  >
-                    {entry.summary}
-                  </p>
-                )}
-              </div>
-            </Link>
-          ))}
-          {dailyEntries.length === 0 && (
-            <p className="text-[10px] font-vt323 py-4 text-center" style={{ color: 'var(--text-dim)' }}>
-              No digests yet — awaiting first dispatch.
-            </p>
-          )}
-        </div>
-      )}
+      {/* Content area */}
+      <div className="flex-1 overflow-hidden p-2" style={{ background: '#ffffff' }}>
 
-      {/* ---- Weekly preview ---- */}
-      {tab === "weekly" && (
-        <div className="custom-scroll overflow-y-auto pr-1 space-y-2 flex-1">
-          {recent.map((entry) => (
-            <Link
-              key={entry.slug}
-              href={`/weekly/${entry.slug}`}
-              className="group flex gap-3 p-2 transition-all border border-transparent"
-            >
-              {entry.cover ? (
-                <div
-                  className="w-16 h-12 shrink-0 overflow-hidden border"
-                  style={{ borderColor: 'var(--border-cover)' }}
-                >
-                  <CoverImage src={entry.cover} />
+        {/* ---- Daily digest preview ---- */}
+        {tab === "daily" && (
+          <div className="custom-scroll overflow-y-auto h-full pr-1 space-y-0.5">
+            {dailyEntries.slice(0, 5).map((entry, i) => (
+              <Link
+                key={entry.slug}
+                href={`/daily/${entry.slug}`}
+                className="group flex gap-2 p-2 transition-all block"
+                style={{
+                  background: i % 2 === 0 ? '#f5f4ea' : '#ffffff',
+                  border: '1px solid transparent',
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.background = '#dff0ff';
+                  (e.currentTarget as HTMLElement).style.borderColor = '#316ac5';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.background = i % 2 === 0 ? '#f5f4ea' : '#ffffff';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'transparent';
+                }}
+              >
+                <div className="flex-1 min-w-0">
+                  <h3
+                    className="text-xs truncate"
+                    style={{ color: '#0000cc', fontFamily: 'Tahoma, sans-serif', fontSize: '11px', textDecoration: 'underline' }}
+                  >
+                    {entry.title}
+                  </h3>
+                  <time
+                    className="text-xs"
+                    style={{ color: '#595959', fontFamily: 'Tahoma, sans-serif', fontSize: '10px' }}
+                  >
+                    {entry.date}
+                  </time>
+                  {entry.summary && (
+                    <p
+                      className="text-xs line-clamp-2 mt-0.5"
+                      style={{ color: '#333333', fontFamily: 'Tahoma, sans-serif', fontSize: '10px' }}
+                    >
+                      {entry.summary}
+                    </p>
+                  )}
                 </div>
-              ) : (
-                <div
-                  className="w-16 h-12 shrink-0 border"
-                  style={{ background: 'var(--bg-placeholder)', borderColor: 'var(--border-subtle)' }}
-                />
-              )}
-              <div className="flex-1 min-w-0">
-                <h3
-                  className="text-xs font-vt323 transition-colors truncate"
-                  style={{ color: 'var(--text-card-title)' }}
-                >
-                  {entry.title}
-                </h3>
-                <time
-                  className="text-[9px] font-vt323 tracking-wider"
-                  style={{ color: 'var(--text-dim)' }}
-                >
-                  {entry.date}
-                </time>
-                {entry.summary && (
-                  <p
-                    className="text-[9px] line-clamp-1 mt-0.5"
-                    style={{ color: 'var(--text-dim)' }}
-                  >
-                    {entry.summary}
-                  </p>
-                )}
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
+              </Link>
+            ))}
+            {dailyEntries.length === 0 && (
+              <p className="text-xs py-4 text-center" style={{ color: '#595959', fontFamily: 'Tahoma, sans-serif' }}>
+                No digests yet — awaiting first dispatch.
+              </p>
+            )}
+          </div>
+        )}
 
-      {/* ---- Stack / modules ---- */}
-      {tab === "stack" && (
-        <div className="custom-scroll overflow-y-auto pr-2 space-y-3 flex-1">
-          {modules.map((mod, i) => (
-            <div key={mod.name} className="group cursor-pointer">
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-vt323 transition-colors">
-                  {mod.name}
-                </span>
-                <span
-                  className="text-[10px] font-tech"
-                  style={{ color: mod.statusVar }}
-                >
-                  {mod.status}
-                </span>
+        {/* ---- Weekly preview ---- */}
+        {tab === "weekly" && (
+          <div className="custom-scroll overflow-y-auto h-full pr-1 space-y-0.5">
+            {recent.map((entry, i) => (
+              <Link
+                key={entry.slug}
+                href={`/weekly/${entry.slug}`}
+                className="group flex gap-2 p-2 transition-all block"
+                style={{
+                  background: i % 2 === 0 ? '#f5f4ea' : '#ffffff',
+                  border: '1px solid transparent',
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.background = '#dff0ff';
+                  (e.currentTarget as HTMLElement).style.borderColor = '#316ac5';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.background = i % 2 === 0 ? '#f5f4ea' : '#ffffff';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'transparent';
+                }}
+              >
+                {entry.cover ? (
+                  <div
+                    className="w-14 h-10 shrink-0 overflow-hidden"
+                    style={{ border: '1px solid #d4d0c8' }}
+                  >
+                    <CoverImage src={entry.cover} />
+                  </div>
+                ) : (
+                  <div
+                    className="w-14 h-10 shrink-0 flex items-center justify-center"
+                    style={{ background: '#d4d0c8', border: '1px solid #a0a0a0' }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="#808080" aria-hidden="true">
+                      <rect x="2" y="2" width="16" height="16" fill="none" stroke="#808080" strokeWidth="1"/>
+                      <path d="M2 14 L6 10 L9 13 L13 8 L18 14Z" fill="#a0a0a0"/>
+                      <circle cx="13" cy="7" r="2" fill="#a0a0a0"/>
+                    </svg>
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <h3
+                    className="text-xs truncate"
+                    style={{ color: '#0000cc', fontFamily: 'Tahoma, sans-serif', fontSize: '11px', textDecoration: 'underline' }}
+                  >
+                    {entry.title}
+                  </h3>
+                  <time
+                    className="text-xs"
+                    style={{ color: '#595959', fontFamily: 'Tahoma, sans-serif', fontSize: '10px' }}
+                  >
+                    {entry.date}
+                  </time>
+                  {entry.summary && (
+                    <p
+                      className="text-xs line-clamp-1 mt-0.5"
+                      style={{ color: '#333333', fontFamily: 'Tahoma, sans-serif', fontSize: '10px' }}
+                    >
+                      {entry.summary}
+                    </p>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+
+        {/* ---- Stack / modules ---- */}
+        {tab === "stack" && (
+          <div className="custom-scroll overflow-y-auto h-full pr-1 space-y-3 p-1">
+            {modules.map((mod, i) => (
+              <div key={mod.name} className="group">
+                <div className="flex items-center justify-between mb-1">
+                  <span style={{ fontFamily: 'Tahoma, sans-serif', fontSize: '11px', color: '#000000' }}>
+                    {mod.name}
+                  </span>
+                  <span style={{ fontFamily: 'Tahoma, sans-serif', fontSize: '10px', color: mod.statusVar, fontWeight: 'bold' }}>
+                    {mod.status}
+                  </span>
+                </div>
+                <div className="progress-bar-bg">
+                  <div
+                    ref={(el) => { barsRef.current[i] = el; }}
+                    className="progress-bar-fill module-bar"
+                    style={{ width: `${mod.base}%` }}
+                  />
+                </div>
               </div>
-              <div className="progress-bar-bg">
-                <div
-                  ref={(el) => { barsRef.current[i] = el; }}
-                  className="progress-bar-fill module-bar"
-                  style={{ width: `${mod.base}%` }}
-                />
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* XP status bar */}
+      <div
+        className="shrink-0 px-2 py-1 flex items-center"
+        style={{
+          background: 'linear-gradient(180deg, #f5f4ea 0%, #ece9d8 100%)',
+          borderTop: '1px solid #848484',
+          fontSize: '10px',
+          fontFamily: 'Tahoma, sans-serif',
+          color: '#595959',
+        }}
+      >
+        <div style={{ borderRight: '1px solid #d4d0c8', paddingRight: '8px', marginRight: '8px' }}>
+          {tab === "daily" ? dailyEntries.length : tab === "weekly" ? weeklyEntries.length : modules.length} items
         </div>
-      )}
+        <span>Ready</span>
+      </div>
     </TechBorder>
   );
 }

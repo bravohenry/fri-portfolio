@@ -9,6 +9,7 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { GeistPixelSquare } from "geist/font/pixel";
+import { SkinProvider } from "@/lib/skin";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -25,9 +26,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} ${GeistPixelSquare.variable}`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem('fri-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}` }} />
+        {/* Restore both skin and theme before first paint to avoid flash */}
+        <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem('fri-theme');if(t)document.documentElement.setAttribute('data-theme',t);var s=localStorage.getItem('fri-skin');document.documentElement.setAttribute('data-skin',s==='scifi'?'scifi':'xp')}catch(e){}` }} />
       </head>
-      <body className="font-suse">{children}</body>
+      <body>
+        <SkinProvider>{children}</SkinProvider>
+      </body>
     </html>
   );
 }

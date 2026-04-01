@@ -8,8 +8,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSkin } from "@/lib/skin";
 
 export function TypeWriter({ sayings }: { sayings: string[] }) {
+  const { skin } = useSkin();
   const [text, setText] = useState("");
 
   useEffect(() => {
@@ -50,10 +52,26 @@ export function TypeWriter({ sayings }: { sayings: string[] }) {
     return () => clearTimeout(timer);
   }, [sayings]);
 
+  if (skin === "scifi") {
+    return (
+      <div className="mt-6 p-3 text-xs font-vt323" style={{ background: "var(--bg-surface)", color: "var(--text-value)" }}>
+        <span>{text}</span>
+        <span className="quote-cursor">|</span>
+      </div>
+    );
+  }
+
   return (
-    <div className="mt-6 p-3 text-xs font-vt323" style={{ background: 'var(--bg-surface)', color: 'var(--text-value)' }}>
+    <div
+      style={{
+        fontFamily: "Lucida Console, Courier New, monospace",
+        fontSize: "10px",
+        color: "#0a246a",
+        lineHeight: "1.4",
+      }}
+    >
       <span>{text}</span>
-      <span className="quote-cursor">|</span>
+      <span className="quote-cursor" style={{ color: "#316ac5" }}>|</span>
     </div>
   );
 }

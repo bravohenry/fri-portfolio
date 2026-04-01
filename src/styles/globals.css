@@ -1,5 +1,5 @@
 /* ==========================================================================
- * FRI Interface v2026 — Global Theme System
+ * FRI Interface — Dual Skin Theme System
  * ==========================================================================
  * [INPUT]:  Tailwind CSS v4 engine
  * [OUTPUT]: CSS custom properties, keyframes, utility classes, typography
@@ -17,6 +17,12 @@
 .status-dot, .arc-video, .arc-ring {
   border-radius: 50% !important;
 }
+/* XP titlebar buttons keep rounded corners — only in xp skin */
+[data-skin="xp"] .xp-btn-close,
+[data-skin="xp"] .xp-btn-min,
+[data-skin="xp"] .xp-btn-max {
+  border-radius: 3px !important;
+}
 
 /* --------------------------------------------------------------------------
  * THEME — brand tokens exposed to Tailwind utilities
@@ -24,13 +30,21 @@
  * -------------------------------------------------------------------------- */
 
 @theme {
-  /* -- brand palette ---------------------------------------------------- */
+  /* -- XP Luna palette -------------------------------------------------- */
+  --color-xp-blue: #0a246a;
+  --color-xp-titlebar-start: #0a246a;
+  --color-xp-titlebar-end: #3a6ea5;
+  --color-xp-silver: #ece9d8;
+  --color-xp-silver-dark: #d4d0c8;
+  --color-xp-green: #3a6e00;
+  --color-xp-accent: #316ac5;
+  --color-glass-border: #848484;
+
+  /* -- sci-fi palette --------------------------------------------------- */
   --color-neon-pink: #ec4899;
   --color-neon-coral: #fb923c;
   --color-neon-dim: #4d2d3d;
   --color-bg-dark: #050510;
-  --color-glass-border: rgba(236, 72, 153, 0.35);
-  --color-glass-bg: rgba(15, 5, 15, 0.75);
   --color-pink-text: #fce7f3;
 
   /* -- font stacks ------------------------------------------------------ */
@@ -41,10 +55,155 @@
 }
 
 /* --------------------------------------------------------------------------
- * CSS CUSTOM PROPERTIES — dark theme (default)
+ * CSS CUSTOM PROPERTIES — Windows XP Luna theme
  * -------------------------------------------------------------------------- */
 
 :root {
+  /* ---- XP primitives ---- */
+  --xp-blue: #0a246a;
+  --xp-blue-mid: #3a6ea5;
+  --xp-silver: #ece9d8;
+  --xp-silver-dark: #d4d0c8;
+  --xp-silver-mid: #f5f4ea;
+  --xp-green: #3a6e00;
+  --xp-green-bright: #6cbd00;
+  --xp-accent: #316ac5;
+  --xp-text-blue: #0a246a;
+
+  /* ---- backgrounds ---- */
+  --bg-body: #3a6ea5;
+  --bg-grid-line: rgba(10, 36, 106, 0.05);
+  --bg-panel: #ece9d8;
+  --bg-panel-hover-border: #0a246a;
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #dff0ff;
+  --bg-surface-alt: #eaf4ff;
+  --bg-input: #ffffff;
+  --bg-bar-area: #d4d0c8;
+  --bg-diamond: #316ac5;
+  --bg-diamond-orange: #e86c00;
+  --bg-placeholder: #d4d0c8;
+  --bg-tab-active: #ece9d8;
+  --bg-hover-row: #dff0ff;
+  --border-hover-row: #316ac5;
+
+  /* ---- text ---- */
+  --text-primary: #000000;
+  --text-secondary: #1f1f1f;
+  --text-muted: #595959;
+  --text-dim: #808080;
+  --text-accent: #0a246a;
+  --text-accent-soft: #316ac5;
+  --text-accent-muted: rgba(49, 106, 197, 0.5);
+  --text-heading: #0a246a;
+  --text-value: #0a246a;
+  --text-panel-title: #ffffff;
+  --text-card-title: #0a246a;
+  --text-card-body: #333333;
+  --text-card-highlight: #316ac5;
+  --text-orange-title: #7a3200;
+  --text-orange-body: #7a3200;
+  --text-link: #0000cc;
+  --text-link-hover: #cc0000;
+  --text-link-easter: rgba(0, 0, 204, 0.5);
+  --text-link-easter-hover: rgba(204, 0, 0, 0.8);
+  --text-status: #3a6e00;
+  --text-status-ready: #7a5200;
+  --text-tab-active: #000000;
+  --text-tab-inactive: #595959;
+  --text-tab-inactive-hover: #000000;
+  --text-input: #000000;
+  --text-input-placeholder: #808080;
+
+  /* ---- borders ---- */
+  --border-accent: #848484;
+  --border-subtle: #d4d0c8;
+  --border-tab-active: #848484;
+  --border-divider: #d4d0c8;
+  --border-cover: #a0a0a0;
+  --border-video: #0a246a;
+  --border-orange: #c06000;
+  --border-crosshair: rgba(10, 36, 106, 0.15);
+
+  /* ---- header / titlebar ---- */
+  --header-bg: linear-gradient(180deg, #3168d5 0%, #0a246a 100%);
+  --header-border: #0a246a;
+  --gauge-track: #d4d0c8;
+  --gauge-fill: #6cbd00;
+
+  /* ---- scanline (disabled for XP) ---- */
+  --scanline-color: transparent;
+  --scanner-color: transparent;
+
+  /* ---- terminal ---- */
+  --terminal-text: #c0c0c0;
+  --terminal-output: #ffffff;
+  --terminal-meta: #808080;
+  --terminal-user: #6cbd00;
+  --terminal-fri: #ffcc00;
+  --terminal-cursor-bg: #c0c0c0;
+
+  /* ---- scrollbar ---- */
+  --scroll-track: #d4d0c8;
+  --scroll-thumb: #a0a0a0;
+
+  /* ---- icons ---- */
+  --icon-filter: brightness(0) saturate(100%) invert(12%) sepia(80%) saturate(2000%) hue-rotate(210deg);
+  --icon-filter-white: brightness(0) invert(1);
+
+  /* ---- shimmer ---- */
+  --shimmer-base: rgba(49, 106, 197, 0.4);
+  --shimmer-peak: rgba(255, 255, 255, 1);
+
+  /* ---- arc reactor rings ---- */
+  --ring-3: rgba(10, 36, 106, 0.3);
+  --ring-4: rgba(10, 36, 106, 0.2);
+  --ring-5: rgba(10, 36, 106, 0.12);
+  --crosshair-via: rgba(10, 36, 106, 0.15);
+
+  /* ---- bar chart (diagnostics) ---- */
+  --bar-active: rgba(49, 106, 197, 0.75);
+  --bar-inactive: rgba(49, 106, 197, 0.12);
+  --bar-hovered: rgba(49, 106, 197, 1);
+  --bar-dimmed: rgba(49, 106, 197, 0.3);
+  --bar-dimmed-inactive: rgba(49, 106, 197, 0.05);
+  --bar-label: #0a246a;
+
+  /* ---- diary content ---- */
+  --diary-h1: #0a246a;
+  --diary-h2: #7a3200;
+  --diary-h3: #0a246a;
+  --diary-p: #1f1f1f;
+  --diary-em: #316ac5;
+  --diary-strong: #000000;
+  --diary-quote-border: #316ac5;
+  --diary-quote-text: #595959;
+  --diary-code-bg: #f0f0f0;
+  --diary-code-text: #7a3200;
+  --diary-link: #0000cc;
+  --diary-link-underline: rgba(0, 0, 204, 0.3);
+  --diary-hr: #d4d0c8;
+
+  /* ---- matrix rain ---- */
+  --matrix-text: rgba(10, 36, 106, 0.08);
+  --matrix-bright: rgba(10, 36, 106, 0.16);
+
+  /* ---- XP panel 3D borders ---- */
+  --xp-raised-outer: #ffffff;
+  --xp-raised-inner: #d0cebe;
+  --xp-sunken-outer: #808080;
+  --xp-sunken-inner: #404040;
+  --xp-panel-border: #848484;
+  --xp-inset-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #ffffff, inset 2px 2px 0 #808080, inset -2px -2px 0 #d4d0c8;
+  --xp-raised-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #000000, inset 2px 2px 0 #d4d0c8, inset -2px -2px 0 #808080;
+}
+
+/* --------------------------------------------------------------------------
+ * SCI-FI SKIN — dark neon theme (original FRI design)
+ * Applied when data-skin="scifi" on <html>
+ * -------------------------------------------------------------------------- */
+
+[data-skin="scifi"] {
   /* ---- primitives ---- */
   --neon-pink: #ec4899;
   --neon-coral: #fb923c;
@@ -172,124 +331,7 @@
 }
 
 /* --------------------------------------------------------------------------
- * LIGHT THEME — single source of truth, no Tailwind class overrides
- * -------------------------------------------------------------------------- */
-
-[data-theme="light"] {
-  --neon-pink: #db2777;
-  --neon-coral: #ea580c;
-  --neon-dim: #fce7f3;
-  --glass-border: rgba(219, 39, 119, 0.2);
-  --glass-bg: rgba(255, 255, 255, 0.85);
-
-  --bg-body: #fafafa;
-  --bg-grid-line: rgba(219, 39, 119, 0.04);
-  --bg-panel: rgba(255, 255, 255, 0.85);
-  --bg-panel-hover-border: rgba(219, 39, 119, 0.4);
-  --bg-surface: rgba(219, 39, 119, 0.06);
-  --bg-surface-hover: rgba(219, 39, 119, 0.1);
-  --bg-surface-alt: rgba(194, 65, 12, 0.06);
-  --bg-input: rgba(255, 255, 255, 0.8);
-  --bg-bar-area: rgba(219, 39, 119, 0.05);
-  --bg-diamond: #ec4899;
-  --bg-diamond-orange: #ea580c;
-  --bg-placeholder: rgba(219, 39, 119, 0.06);
-  --bg-tab-active: rgba(219, 39, 119, 0.1);
-  --bg-hover-row: rgba(219, 39, 119, 0.06);
-  --border-hover-row: rgba(219, 39, 119, 0.2);
-
-  --text-primary: #1f2937;
-  --text-secondary: #374151;
-  --text-muted: #6b7280;
-  --text-dim: #9ca3af;
-  --text-accent: #db2777;
-  --text-accent-soft: rgba(219, 39, 119, 0.6);
-  --text-accent-muted: rgba(219, 39, 119, 0.3);
-  --text-heading: #be185d;
-  --text-value: #db2777;
-  --text-panel-title: #be185d;
-  --text-card-title: #9d174d;
-  --text-card-body: #6b7280;
-  --text-card-highlight: rgba(219, 39, 119, 0.8);
-  --text-orange-title: #c2410c;
-  --text-orange-body: rgba(194, 65, 12, 0.8);
-  --text-link: #9d174d;
-  --text-link-hover: #db2777;
-  --text-link-easter: rgba(157, 23, 77, 0.5);
-  --text-link-easter-hover: rgba(219, 39, 119, 0.8);
-  --text-status: #059669;
-  --text-status-ready: #ca8a04;
-  --text-tab-active: #db2777;
-  --text-tab-inactive: #6b7280;
-  --text-tab-inactive-hover: #374151;
-  --text-input: #1f2937;
-  --text-input-placeholder: rgba(131, 24, 67, 0.3);
-
-  --border-accent: rgba(219, 39, 119, 0.2);
-  --border-subtle: rgba(219, 39, 119, 0.08);
-  --border-tab-active: rgba(219, 39, 119, 0.2);
-  --border-divider: rgba(219, 39, 119, 0.15);
-  --border-cover: rgba(219, 39, 119, 0.1);
-  --border-video: #db2777;
-  --border-orange: rgba(194, 65, 12, 0.3);
-  --border-crosshair: rgba(219, 39, 119, 0.1);
-
-  --header-bg: rgba(255, 255, 255, 0.92);
-  --header-border: rgba(219, 39, 119, 0.15);
-  --gauge-track: #fce7f3;
-  --gauge-fill: #ec4899;
-
-  --scanline-color: rgba(219, 39, 119, 0.02);
-  --scanner-color: rgba(251, 146, 60, 0.04);
-
-  --terminal-text: #374151;
-  --terminal-output: #1f2937;
-  --terminal-meta: #9ca3af;
-  --terminal-user: #059669;
-  --terminal-fri: #ea580c;
-  --terminal-cursor-bg: #ea580c;
-
-  --scroll-track: rgba(219, 39, 119, 0.05);
-  --scroll-thumb: #ec4899;
-
-  --icon-filter: brightness(0) saturate(100%) invert(25%) sepia(90%) saturate(1800%) hue-rotate(310deg);
-  --icon-filter-white: brightness(0);
-
-  --shimmer-base: rgba(219, 39, 119, 0.3);
-  --shimmer-peak: rgba(219, 39, 119, 0.9);
-
-  --ring-3: rgba(219, 39, 119, 0.2);
-  --ring-4: rgba(219, 39, 119, 0.15);
-  --ring-5: rgba(219, 39, 119, 0.1);
-  --crosshair-via: rgba(219, 39, 119, 0.1);
-
-  --bar-active: rgba(219, 39, 119, 0.6);
-  --bar-inactive: rgba(219, 39, 119, 0.08);
-  --bar-hovered: rgba(219, 39, 119, 0.9);
-  --bar-dimmed: rgba(219, 39, 119, 0.2);
-  --bar-dimmed-inactive: rgba(219, 39, 119, 0.03);
-  --bar-label: #9d174d;
-
-  --diary-h1: #be185d;
-  --diary-h2: #c2410c;
-  --diary-h3: #be185d;
-  --diary-p: #374151;
-  --diary-em: #db2777;
-  --diary-strong: #9d174d;
-  --diary-quote-border: #ec4899;
-  --diary-quote-text: #6b7280;
-  --diary-code-bg: rgba(219, 39, 119, 0.08);
-  --diary-code-text: #be185d;
-  --diary-link: #db2777;
-  --diary-link-underline: rgba(219, 39, 119, 0.3);
-  --diary-hr: rgba(219, 39, 119, 0.15);
-
-  --matrix-text: rgba(219, 39, 119, 0.08);
-  --matrix-bright: rgba(219, 39, 119, 0.18);
-}
-
-/* --------------------------------------------------------------------------
- * @font-face — Zpix pixel font
+ * @font-face — kept for fallback
  * -------------------------------------------------------------------------- */
 
 @font-face {
@@ -301,18 +343,27 @@
 }
 
 /* --------------------------------------------------------------------------
- * BASE — body, html
+ * BASE — body, html — Windows XP desktop background
  * -------------------------------------------------------------------------- */
 
 body {
   background-color: var(--bg-body);
-  background-image:
-    linear-gradient(var(--bg-grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--bg-grid-line) 1px, transparent 1px);
-  background-size: 40px 40px;
   color: var(--text-primary);
-  font-family: var(--font-geist), 'Geist', sans-serif;
+  font-family: var(--font-tech), 'Tahoma', 'Trebuchet MS', sans-serif;
+  font-size: 11px;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* XP skin: override body background with the cobalt blue desktop */
+[data-skin="xp"] body {
+  background-image: linear-gradient(180deg, #4a7fb5 0%, #3a6ea5 50%, #2a5e95 100%);
+  font-family: 'Tahoma', 'Trebuchet MS', sans-serif;
+}
+
+/* Sci-fi skin: dark body with subtle grid */
+[data-skin="scifi"] body {
+  background-image: none;
+  font-family: var(--font-tech), monospace;
 }
 
 /* --------------------------------------------------------------------------
@@ -320,16 +371,28 @@ body {
  * -------------------------------------------------------------------------- */
 
 .font-tech {
-  font-family: var(--font-geist), 'Geist', monospace;
+  font-family: 'Lucida Console', 'Courier New', monospace;
+}
+
+[data-skin="scifi"] .font-tech {
+  font-family: var(--font-geist), monospace;
 }
 
 .font-workbench {
-  font-family: var(--font-geist), 'Geist', sans-serif;
+  font-family: 'Tahoma', 'Trebuchet MS', sans-serif;
+}
+
+[data-skin="scifi"] .font-workbench {
+  font-family: var(--font-geist), sans-serif;
 }
 
 .font-vt323 {
-  font-family: var(--font-geist-pixel-square), 'Geist Pixel Square', 'Zpix', monospace;
-  font-weight: 100 !important;
+  font-family: 'Lucida Console', 'Courier New', monospace;
+  font-weight: normal !important;
+}
+
+[data-skin="scifi"] .font-vt323 {
+  font-family: var(--font-geist-pixel-square), 'Zpix', monospace;
 }
 
 #clock {
@@ -338,8 +401,7 @@ body {
 }
 
 .font-module-label {
-  font-family: var(--font-geist), 'Geist', sans-serif;
-  animation: font-weight-pulse 3s ease-in-out infinite;
+  font-family: 'Tahoma', 'Trebuchet MS', sans-serif;
 }
 
 /* --------------------------------------------------------------------------
@@ -354,21 +416,141 @@ body {
 }
 
 .pa-icon.text-white { filter: var(--icon-filter-white); }
-.pa-icon.text-pink-500 { filter: var(--icon-filter); }
 
 /* --------------------------------------------------------------------------
- * GLASS PANEL
+ * XP WINDOW CHROME
  * -------------------------------------------------------------------------- */
 
-.glass-panel {
-  background: var(--bg-panel);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
-  position: relative;
-  transition: all 0.3s ease;
+/* Window titlebar gradient — XP Luna blue */
+.xp-titlebar {
+  background: linear-gradient(180deg,
+    #4b79d6 0%,
+    #2653cb 8%,
+    #1941b5 15%,
+    #1b46bc 20%,
+    #1b46bc 80%,
+    #0e329c 95%,
+    #0a246a 100%
+  );
+  padding: 3px 4px 3px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #7897dc;
+  border-left: 1px solid #7897dc;
+  border-right: 1px solid #0a246a;
 }
 
-.glass-panel:hover {
+.xp-titlebar-text {
+  color: #ffffff;
+  font-family: 'Trebuchet MS', 'Tahoma', sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* XP window control buttons */
+.xp-btn-close {
+  width: 21px;
+  height: 21px;
+  background: linear-gradient(180deg, #f06050 0%, #d03020 40%, #d03020 60%, #e86050 100%);
+  border: 1px solid #8b1a0a;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: bold;
+  font-family: 'Marlett', 'Arial', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.4), inset -1px -1px 0 rgba(0,0,0,0.3);
+}
+
+.xp-btn-min, .xp-btn-max {
+  width: 21px;
+  height: 21px;
+  background: linear-gradient(180deg, #5a90e8 0%, #2c5fd4 40%, #2c5fd4 60%, #3d72e0 100%);
+  border: 1px solid #0a246a;
+  color: #ffffff;
+  font-size: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.4), inset -1px -1px 0 rgba(0,0,0,0.3);
+}
+
+.xp-btn-close:hover { background: linear-gradient(180deg, #ff8070 0%, #e04030 40%, #e04030 60%, #ff8070 100%); }
+.xp-btn-min:hover, .xp-btn-max:hover { background: linear-gradient(180deg, #80b0ff 0%, #4080f0 40%, #4080f0 60%, #5090f8 100%); }
+
+/* XP window border — raised 3D look */
+.xp-window {
+  border: 1px solid #848484;
+  box-shadow:
+    1px 1px 0 #ffffff inset,
+    -1px -1px 0 #404040 inset,
+    2px 2px 0 #d4d0c8 inset,
+    -2px -2px 0 #808080 inset,
+    0 4px 12px rgba(0,0,0,0.4);
+  background: var(--bg-panel);
+}
+
+/* XP menu bar */
+.xp-menubar {
+  background: linear-gradient(180deg, #f5f4ea 0%, #ece9d8 100%);
+  border-bottom: 1px solid #848484;
+  padding: 2px 4px;
+  display: flex;
+  gap: 2px;
+  font-size: 11px;
+  font-family: 'Tahoma', sans-serif;
+}
+
+.xp-menubar-item {
+  padding: 2px 6px;
+  color: #000000;
+  cursor: pointer;
+}
+
+.xp-menubar-item:hover {
+  background: #316ac5;
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+ * GLASS PANEL — skin-aware panel base
+ * -------------------------------------------------------------------------- */
+
+/* XP skin: flat silver panel with 3D inset border */
+[data-skin="xp"] .glass-panel {
+  background: var(--bg-panel);
+  border: 1px solid #848484;
+  box-shadow:
+    1px 1px 0 #ffffff inset,
+    -1px -1px 0 #808080 inset;
+  position: relative;
+  transition: all 0.15s ease;
+}
+
+[data-skin="xp"] .glass-panel:hover {
+  border-color: #0a246a;
+}
+
+/* Sci-fi skin: original glass/blur panel */
+[data-skin="scifi"] .glass-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-accent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+[data-skin="scifi"] .glass-panel:hover {
   border-color: var(--bg-panel-hover-border);
 }
 
@@ -406,48 +588,74 @@ body {
  * TECH BORDER — corner brackets
  * -------------------------------------------------------------------------- */
 
-.tech-border::before, .tech-border::after,
-.tech-border > .corner-bl, .tech-border > .corner-br {
+/* XP: subtle blue accent corners */
+[data-skin="xp"] .tech-border::before, [data-skin="xp"] .tech-border::after,
+[data-skin="xp"] .tech-border > .corner-bl, [data-skin="xp"] .tech-border > .corner-br {
   content: '';
   position: absolute;
   box-sizing: content-box;
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border: 2px solid transparent;
   transition: all 0.3s ease;
 }
+[data-skin="xp"] .tech-border::before { top: -1px; left: -1px; border-top-color: #316ac5; border-left-color: #316ac5; }
+[data-skin="xp"] .tech-border::after { top: -1px; right: -1px; border-top-color: #316ac5; border-right-color: #316ac5; }
+[data-skin="xp"] .tech-border > .corner-bl { bottom: -1px; left: -1px; border-bottom-color: #316ac5; border-left-color: #316ac5; }
+[data-skin="xp"] .tech-border > .corner-br { bottom: -1px; right: -1px; border-bottom-color: #316ac5; border-right-color: #316ac5; }
 
-.tech-border::before { top: -1px; left: -1px; border-top-color: var(--neon-pink); border-left-color: var(--neon-pink); }
-.tech-border::after { top: -1px; right: -1px; border-top-color: var(--neon-pink); border-right-color: var(--neon-pink); }
-.tech-border > .corner-bl { bottom: -1px; left: -1px; border-bottom-color: var(--neon-pink); border-left-color: var(--neon-pink); }
-.tech-border > .corner-br { bottom: -1px; right: -1px; border-bottom-color: var(--neon-pink); border-right-color: var(--neon-pink); }
+/* Sci-fi: neon pink accent corners */
+[data-skin="scifi"] .tech-border::before, [data-skin="scifi"] .tech-border::after,
+[data-skin="scifi"] .tech-border > .corner-bl, [data-skin="scifi"] .tech-border > .corner-br {
+  content: '';
+  position: absolute;
+  box-sizing: content-box;
+  width: 10px;
+  height: 10px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+[data-skin="scifi"] .tech-border::before { top: -1px; left: -1px; border-top-color: var(--text-accent); border-left-color: var(--text-accent); }
+[data-skin="scifi"] .tech-border::after { top: -1px; right: -1px; border-top-color: var(--text-accent); border-right-color: var(--text-accent); }
+[data-skin="scifi"] .tech-border > .corner-bl { bottom: -1px; left: -1px; border-bottom-color: var(--text-accent); border-left-color: var(--text-accent); }
+[data-skin="scifi"] .tech-border > .corner-br { bottom: -1px; right: -1px; border-bottom-color: var(--text-accent); border-right-color: var(--text-accent); }
 
 /* --------------------------------------------------------------------------
- * SCANLINE OVERLAY
+ * SCANLINE OVERLAY — only in scifi skin
  * -------------------------------------------------------------------------- */
 
-.scanline-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  background: linear-gradient(to bottom, transparent 50%, var(--scanline-color) 51%);
-  background-size: 100% 4px;
-  z-index: 50;
+[data-skin="xp"] .scanline-overlay {
+  display: none;
 }
 
-.scanner-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 200px;
-  background: linear-gradient(to bottom, transparent, var(--scanner-color), transparent);
-  animation: scanline 8s linear infinite;
+[data-skin="scifi"] .scanline-overlay {
+  display: block;
+  position: absolute;
+  inset: 0;
   pointer-events: none;
-  z-index: 40;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    var(--scanline-color) 3px,
+    var(--scanline-color) 4px
+  );
+  z-index: 20;
+}
+
+[data-skin="xp"] .scanner-bar {
+  display: none;
+}
+
+[data-skin="scifi"] .scanner-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to bottom, transparent, var(--scanner-color), transparent);
+  pointer-events: none;
+  z-index: 21;
+  animation: scanline 8s linear infinite;
 }
 
 /* --------------------------------------------------------------------------
@@ -463,11 +671,10 @@ body {
 #network-traffic .network-bar {
   border-radius: 0;
   min-width: 4px;
-  image-rendering: pixelated;
 }
 
 /* --------------------------------------------------------------------------
- * ARC REACTOR
+ * ARC REACTOR — XP holographic monitor look
  * -------------------------------------------------------------------------- */
 
 .arc-reactor {
@@ -479,7 +686,7 @@ body {
   align-items: center;
 }
 
-/* ---- neon shimmer — thinking/status light sweep ---- */
+/* ---- neon shimmer — XP blue sweep ---- */
 .neon-shimmer {
   background: linear-gradient(
     90deg,
@@ -506,7 +713,7 @@ body {
 .arc-ring {
   position: absolute;
   border-radius: 50%;
-  border: 1px solid var(--neon-pink);
+  border: 1px solid var(--xp-accent);
 }
 
 .arc-ring-3 {
@@ -531,17 +738,19 @@ body {
 }
 
 /* --------------------------------------------------------------------------
- * PROGRESS BAR
+ * PROGRESS BAR — XP style
  * -------------------------------------------------------------------------- */
 
 .progress-bar-bg {
-  background: var(--bg-surface);
-  height: 4px;
+  background: var(--bg-bar-area);
+  height: 14px;
   width: 100%;
+  border: 1px solid #848484;
+  box-shadow: inset 1px 1px 0 rgba(0,0,0,0.2);
 }
 
 .progress-bar-fill {
-  background: var(--neon-pink);
+  background: linear-gradient(180deg, #3ea0ff 0%, #0050d0 50%, #0040c0 51%, #0060e8 100%);
   height: 100%;
   transition: width 0.8s steps(12) 0s;
 }
@@ -565,48 +774,20 @@ body {
 }
 
 #quote-typer::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
-  opacity: 0.18;
-  pointer-events: none;
-  mix-blend-mode: overlay;
+  display: none;
 }
 
 #quote-text {
-  text-shadow:
-    0.5px 0 1px rgba(236, 72, 153, 0.7),
-    1px 0 2px rgba(236, 72, 153, 0.55),
-    1.5px 0 1px rgba(236, 72, 153, 0.4),
-    2px 0 3px rgba(236, 72, 153, 0.45),
-    2.5px 0 1px rgba(236, 72, 153, 0.3),
-    3px 0 4px rgba(236, 72, 153, 0.35),
-    3.5px 0 1px rgba(236, 72, 153, 0.2),
-    4px 0 5px rgba(236, 72, 153, 0.25),
-    4.5px 0 1px rgba(236, 72, 153, 0.15),
-    5px 0 6px rgba(236, 72, 153, 0.12),
-    5.5px 0 1px rgba(236, 72, 153, 0.08),
-    6px 0 4px rgba(236, 72, 153, 0.06),
-    0 0.5px 1px rgba(236, 72, 153, 0.2),
-    0 1px 1px rgba(236, 72, 153, 0.12);
-  animation: quote-trail 2.5s ease-in-out infinite;
-}
-
-[data-theme="light"] #quote-text {
-  text-shadow:
-    0.5px 0 1px rgba(219, 39, 119, 0.3),
-    1px 0 2px rgba(219, 39, 119, 0.2),
-    0 0.5px 1px rgba(219, 39, 119, 0.1);
+  text-shadow: none;
 }
 
 /* --------------------------------------------------------------------------
- * TERMINAL OUTPUT
+ * TERMINAL OUTPUT — black console window
  * -------------------------------------------------------------------------- */
 
 .terminal-output {
-  font-family: var(--font-geist-pixel-square), 'Geist Pixel Square', monospace;
-  font-size: 15px;
+  font-family: 'Lucida Console', 'Courier New', monospace;
+  font-size: 12px;
   line-height: 1.5;
   padding: 0;
   color: var(--terminal-text);
@@ -615,7 +796,7 @@ body {
 .terminal-output .term-prompt-user { color: var(--terminal-user); }
 .terminal-output .term-prompt-fri { color: var(--terminal-fri); }
 .terminal-output .term-output { color: var(--terminal-output); }
-.terminal-output .term-meta { color: var(--terminal-meta); font-size: 13px; }
+.terminal-output .term-meta { color: var(--terminal-meta); font-size: 11px; }
 .terminal-output .term-cursor {
   display: inline-block;
   width: 8px;
@@ -626,21 +807,159 @@ body {
 }
 
 /* --------------------------------------------------------------------------
- * GLITCH TEXT
+ * XP TASKBAR — only shown in xp skin
  * -------------------------------------------------------------------------- */
 
-.glitch-text:hover {
-  animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
-  color: #ff0055;
+[data-skin="scifi"] .xp-taskbar,
+[data-skin="scifi"] .xp-start-btn,
+[data-skin="scifi"] .xp-systray {
+  display: none !important;
+}
+
+.xp-taskbar {
+  background: linear-gradient(180deg, #1f4ac8 0%, #2458d0 8%, #1940b5 40%, #1030a0 100%);
+  border-top: 1px solid #5a80e0;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.xp-start-btn {
+  background: linear-gradient(180deg, #6cbc00 0%, #4a9000 50%, #3a7000 100%);
+  border: 1px solid #2a5000;
+  color: #ffffff;
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 2px 10px 2px 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.3), inset -1px -1px 0 rgba(0,0,0,0.3);
+}
+
+.xp-start-btn:hover {
+  background: linear-gradient(180deg, #80d000 0%, #5aa800 50%, #489000 100%);
+}
+
+.xp-systray {
+  background: linear-gradient(180deg, #0e2f9a 0%, #0a246a 100%);
+  border: 1px solid #08186a;
+  border-right: none;
+  padding: 2px 8px;
+  font-size: 10px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.15);
 }
 
 /* --------------------------------------------------------------------------
- * CUSTOM SCROLLBAR
+ * XP PANEL TITLE BAR (section headers inside panels)
  * -------------------------------------------------------------------------- */
 
-.custom-scroll::-webkit-scrollbar { width: 4px; }
-.custom-scroll::-webkit-scrollbar-track { background: var(--scroll-track); }
-.custom-scroll::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 2px; }
+.xp-panel-title {
+  background: linear-gradient(180deg, #3168d5 0%, #0a246a 100%);
+  color: #ffffff;
+  font-family: 'Trebuchet MS', 'Tahoma', sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 3px 6px;
+  margin: -1px -1px 8px -1px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid #0a246a;
+}
+
+/* --------------------------------------------------------------------------
+ * XP BUTTON
+ * -------------------------------------------------------------------------- */
+
+.xp-button {
+  background: linear-gradient(180deg, #f5f4ea 0%, #ece9d8 40%, #d4d0c8 100%);
+  border: 1px solid #707070;
+  color: #000000;
+  font-family: 'Tahoma', sans-serif;
+  font-size: 11px;
+  padding: 3px 10px;
+  cursor: pointer;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080;
+  min-width: 75px;
+  text-align: center;
+}
+
+.xp-button:hover {
+  border-color: #316ac5;
+  background: linear-gradient(180deg, #eef5ff 0%, #ddeeff 40%, #c8d8f0 100%);
+}
+
+.xp-button:active {
+  box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #ffffff;
+  background: linear-gradient(180deg, #d4d0c8 0%, #ece9d8 100%);
+}
+
+/* --------------------------------------------------------------------------
+ * XP INPUT
+ * -------------------------------------------------------------------------- */
+
+.xp-input {
+  background: #ffffff;
+  border: 1px solid #7f9db9;
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.15);
+  font-family: 'Tahoma', sans-serif;
+  font-size: 11px;
+  color: #000000;
+  padding: 3px 4px;
+}
+
+.xp-input:focus {
+  outline: 1px solid #316ac5;
+  border-color: #316ac5;
+}
+
+/* --------------------------------------------------------------------------
+ * GLITCH TEXT — disabled in XP
+ * -------------------------------------------------------------------------- */
+
+.glitch-text:hover {
+  color: #0a246a;
+}
+
+/* --------------------------------------------------------------------------
+ * CUSTOM SCROLLBAR — skin-aware
+ * -------------------------------------------------------------------------- */
+
+/* XP skin: wide classic Windows scrollbar */
+[data-skin="xp"] .custom-scroll::-webkit-scrollbar { width: 16px; }
+[data-skin="xp"] .custom-scroll::-webkit-scrollbar-track {
+  background: #d4d0c8;
+  border: 1px solid #848484;
+}
+[data-skin="xp"] .custom-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #f5f4ea 0%, #d4d0c8 40%, #b8b4a8 100%);
+  border: 1px solid #848484;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080;
+}
+[data-skin="xp"] .custom-scroll::-webkit-scrollbar-button {
+  background: linear-gradient(180deg, #f5f4ea 0%, #d4d0c8 100%);
+  border: 1px solid #848484;
+  height: 16px;
+}
+
+/* Sci-fi skin: thin neon pink scrollbar */
+[data-skin="scifi"] .custom-scroll::-webkit-scrollbar { width: 4px; }
+[data-skin="scifi"] .custom-scroll::-webkit-scrollbar-track {
+  background: var(--scroll-track);
+}
+[data-skin="scifi"] .custom-scroll::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+}
 
 /* --------------------------------------------------------------------------
  * DIRECTIVE REVEAL ANIMATION
@@ -672,8 +991,8 @@ body {
  * -------------------------------------------------------------------------- */
 
 @keyframes font-weight-pulse {
-  0%, 100% { font-weight: 100; }
-  50% { font-weight: 600; }
+  0%, 100% { font-weight: 400; }
+  50% { font-weight: 700; }
 }
 
 @keyframes bar-enter-ltr {
@@ -750,26 +1069,25 @@ body {
  * -------------------------------------------------------------------------- */
 
 .diary-content h1 {
-  font-family: var(--font-geist-pixel-square), 'Geist Pixel Square', monospace;
+  font-family: 'Trebuchet MS', 'Tahoma', sans-serif;
   font-size: 1.5rem;
   color: var(--diary-h1);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.02em;
   margin: 1.5rem 0 0.75rem;
 }
 
 .diary-content h2 {
-  font-family: var(--font-geist-pixel-square), 'Geist Pixel Square', monospace;
+  font-family: 'Trebuchet MS', 'Tahoma', sans-serif;
   font-size: 1.25rem;
   color: var(--diary-h2);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.01em;
   margin: 1.25rem 0 0.5rem;
 }
 
 .diary-content h3 {
-  font-family: var(--font-geist-pixel-square), 'Geist Pixel Square', monospace;
+  font-family: 'Trebuchet MS', 'Tahoma', sans-serif;
   font-size: 1.1rem;
   color: var(--diary-h3);
-  letter-spacing: 0.06em;
   margin: 1rem 0 0.4rem;
 }
 
@@ -787,7 +1105,7 @@ body {
 
 .diary-content strong {
   color: var(--diary-strong);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .diary-content blockquote {
@@ -801,10 +1119,10 @@ body {
 .diary-content code {
   background: var(--diary-code-bg);
   padding: 0.1rem 0.35rem;
-  border-radius: 0.25rem;
-  font-family: var(--font-geist-pixel-square), 'Geist Pixel Square', monospace;
+  font-family: 'Lucida Console', 'Courier New', monospace;
   color: var(--diary-code-text);
   font-size: 0.85em;
+  border: 1px solid #d4d0c8;
 }
 
 .diary-content a {
